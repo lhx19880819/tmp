@@ -228,7 +228,10 @@
     <Compile Include="Assets\aController.cs" />
     <Compile Include="Assets\aInput.cs" />
     <Compile Include="Assets\Level\FPSCounter.cs" />
+    <Compile Include="Assets\vDestroyGameObject.cs" />
+    <Compile Include="Assets\vFisherYatesRandom.cs" />
     <Compile Include="Assets\vMeleeAttackControl.cs" />
+    <Compile Include="Assets\vTriggerSoundByState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
