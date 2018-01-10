@@ -206,12 +206,12 @@ Prefab:
     - target: {fileID: 114911655599211166, guid: 9529ecc3d479da5499993355e6c2cb4f,
         type: 2}
       propertyPath: Xsensitivity
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114911655599211166, guid: 9529ecc3d479da5499993355e6c2cb4f,
         type: 2}
       propertyPath: Ysensitivity
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224807571084571922, guid: 9529ecc3d479da5499993355e6c2cb4f,
         type: 2}
@@ -670,7 +670,7 @@ Prefab:
     - target: {fileID: 114279813219158840, guid: a17642addb2ff9946965d96c94df0241,
         type: 2}
       propertyPath: m_TurnSpeed
-      value: 1
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 114279813219158840, guid: a17642addb2ff9946965d96c94df0241,
         type: 2}
@@ -900,11 +900,11 @@ Prefab:
       objectReference: {fileID: 1196861205}
     - target: {fileID: 11400000, guid: baec086904791744185aaa07a6cf55c2, type: 2}
       propertyPath: m_TurnSpeed
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 11400000, guid: baec086904791744185aaa07a6cf55c2, type: 2}
       propertyPath: m_RollSpeed
-      value: 100
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: baec086904791744185aaa07a6cf55c2, type: 2}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -940,6 +940,10 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11400002, guid: baec086904791744185aaa07a6cf55c2, type: 2}
       propertyPath: closestDistance
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 11400000, guid: baec086904791744185aaa07a6cf55c2, type: 2}
+      propertyPath: m_UpdateType
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []

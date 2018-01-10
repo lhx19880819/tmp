@@ -5,6 +5,8 @@ using UnityStandardAssets.CrossPlatformInput;
 
 public class aInput : MonoBehaviour
 {
+    public static aInput Instance;
+
     private Animator animator;
     Vector2 input;
     public float speed, direction, verticalVelocity;    // general variables to the locomotion
@@ -55,6 +57,7 @@ public class aInput : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        Instance = this;
         animator = GetComponent<Animator>();
         m_Pivot = Camera.main.transform.parent;
         m_CamRig = Camera.main.transform.parent.parent;
@@ -217,16 +220,38 @@ public class aInput : MonoBehaviour
         CameraInput();
     }
 
+    private float gap = 1f;
     private void CameraInput()
     {
+        if (isAttack)
+        {
+            return;
+        }
         if (!Camera.main) Debug.Log("Missing a Camera with the tag MainCamera, please add one.");
         if (!keepDirection) UpdateTargetDirection(Camera.main.transform);
         RotateWithCamera(Camera.main.transform);
 
-        var Y = CrossPlatformInputManager.GetAxis("Mouse Y");
-        var X = CrossPlatformInputManager.GetAxis("Mouse X");
-        Debug.Log(X + " , " + Y);
-        RotateCamera(X, Y);
+        //var Y = CrossPlatformInputManager.GetAxisRaw("Mouse Y");
+        //var X = CrossPlatformInputManager.GetAxisRaw("Mouse X");
+        //if (X > 0)
+        //{
+        //    X = 0.1f;
+        //}
+        //else if (X < 0)
+        //{
+        //    X = -0.1f;
+        //}
+        //if (Y > 0)
+        //{
+        //    Y = 0.1f;
+        //}
+        //else if (Y < 0)
+        //{
+        //    Y = -0.1f;
+        //}
+        //Debug.Log(X + " , " + Y);
+
+        //RotateCamera(X, Y);
     }
 
     protected virtual void RotateWithCamera(Transform cameraTransform)
@@ -266,8 +291,14 @@ public class aInput : MonoBehaviour
     private Vector3 m_PivotEulers;
     private Quaternion m_PivotTargetRot;
     private Quaternion m_TransformTargetRot;
-    private void RotateCamera(float x, float y)
+
+    public void RotateCamera(float x, float y)
     {
+        if (isAttack)
+        {
+            return;
+        }
+
         if (Time.timeScale < float.Epsilon)
             return;
 
@@ -276,14 +307,14 @@ public class aInput : MonoBehaviour
         // Rotate the rig (the root object) around Y axis only:
         //m_TransformTargetRot = Quaternion.Euler(0f, m_LookAngle, 0f);
 
-        if (m_VerticalAutoReturn)
-        {
-            // For tilt input, we need to behave differently depending on whether we're using mouse or touch input:
-            // on mobile, vertical input is directly mapped to tilt value, so it springs back automatically when the look input is released
-            // we have to test whether above or below zero because we want to auto-return to zero even if min and max are not symmetrical.
-            m_TiltAngle = y > 0 ? Mathf.Lerp(0, -m_TiltMin, y) : Mathf.Lerp(0, m_TiltMax, -y);
-        }
-        else
+        //if (m_VerticalAutoReturn)
+        //{
+        //    // For tilt input, we need to behave differently depending on whether we're using mouse or touch input:
+        //    // on mobile, vertical input is directly mapped to tilt value, so it springs back automatically when the look input is released
+        //    // we have to test whether above or below zero because we want to auto-return to zero even if min and max are not symmetrical.
+        //    m_TiltAngle = y > 0 ? Mathf.Lerp(0, -m_TiltMin, y) : Mathf.Lerp(0, m_TiltMax, -y);
+        //}
+        //else
         {
             // on platforms with a mouse, we adjust the current angle based on Y mouse input and turn speed
             m_TiltAngle -= y * m_TurnSpeed;
@@ -292,7 +323,7 @@ public class aInput : MonoBehaviour
         }
 
         // Tilt input around X is applied to the pivot (the child of this object)
-        m_PivotTargetRot = Quaternion.Euler(m_TiltAngle, m_PivotEulers.y, m_PivotEulers.z);
+        //m_PivotTargetRot = Quaternion.Euler(m_TiltAngle, m_PivotEulers.y, m_PivotEulers.z);
         m_TransformTargetRot = Quaternion.Euler(m_TiltAngle, m_LookAngle, 0f);
         //if (m_TurnSmoothing > 0)
         //{
@@ -302,8 +333,8 @@ public class aInput : MonoBehaviour
         //else
         {
             //m_Pivot.localRotation = m_PivotTargetRot;
-            m_CamRig.localRotation = m_TransformTargetRot;
-            //m_CamRig.localRotation = Quaternion.Slerp(m_CamRig.localRotation, m_TransformTargetRot, Time.deltaTime * 2);
+            //m_CamRig.localRotation = m_TransformTargetRot;
+            m_CamRig.localRotation = Quaternion.Lerp(m_CamRig.localRotation, m_TransformTargetRot, 1);
         }
     }
 
