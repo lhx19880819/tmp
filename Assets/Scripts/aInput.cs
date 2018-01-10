@@ -50,13 +50,14 @@ public class aInput : MonoBehaviour
     private int attackId = 0;
     private bool isAttack = false;
 
-    Transform m_Pivot;
+    Transform m_Pivot,m_CamRig;
 
     // Use this for initialization
     void Start()
     {
         animator = GetComponent<Animator>();
-        m_Pivot = Camera.main.transform.parent.parent;
+        m_Pivot = Camera.main.transform.parent;
+        m_CamRig = Camera.main.transform.parent.parent;
     }
 
     public virtual void UpdateTargetDirection(Transform referenceTransform = null)
@@ -224,7 +225,7 @@ public class aInput : MonoBehaviour
 
         var Y = CrossPlatformInputManager.GetAxis("Mouse Y");
         var X = CrossPlatformInputManager.GetAxis("Mouse X");
-
+        Debug.Log(X + " , " + Y);
         RotateCamera(X, Y);
     }
 
@@ -273,7 +274,7 @@ public class aInput : MonoBehaviour
         m_LookAngle += x * m_TurnSpeed;
 
         // Rotate the rig (the root object) around Y axis only:
-        m_TransformTargetRot = Quaternion.Euler(0f, m_LookAngle, 0f);
+        //m_TransformTargetRot = Quaternion.Euler(0f, m_LookAngle, 0f);
 
         if (m_VerticalAutoReturn)
         {
@@ -292,16 +293,17 @@ public class aInput : MonoBehaviour
 
         // Tilt input around X is applied to the pivot (the child of this object)
         m_PivotTargetRot = Quaternion.Euler(m_TiltAngle, m_PivotEulers.y, m_PivotEulers.z);
-
-        if (m_TurnSmoothing > 0)
+        m_TransformTargetRot = Quaternion.Euler(m_TiltAngle, m_LookAngle, 0f);
+        //if (m_TurnSmoothing > 0)
+        //{
+        //    m_Pivot.localRotation = Quaternion.Slerp(m_Pivot.localRotation, m_PivotTargetRot, m_TurnSmoothing * Time.deltaTime);
+        //    m_Pivot.localRotation = Quaternion.Slerp(m_Pivot.localRotation, m_TransformTargetRot, m_TurnSmoothing * Time.deltaTime);
+        //}
+        //else
         {
-            m_Pivot.localRotation = Quaternion.Slerp(m_Pivot.localRotation, m_PivotTargetRot, m_TurnSmoothing * Time.deltaTime);
-            m_Pivot.localRotation = Quaternion.Slerp(m_Pivot.localRotation, m_TransformTargetRot, m_TurnSmoothing * Time.deltaTime);
-        }
-        else
-        {
-            m_Pivot.localRotation = m_PivotTargetRot;
-            m_Pivot.localRotation = m_TransformTargetRot;
+            //m_Pivot.localRotation = m_PivotTargetRot;
+            m_CamRig.localRotation = m_TransformTargetRot;
+            //m_CamRig.localRotation = Quaternion.Slerp(m_CamRig.localRotation, m_TransformTargetRot, Time.deltaTime * 2);
         }
     }
 
