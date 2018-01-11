@@ -4,3 +4,4 @@ Temp/*
 *.apk
 *.csproj
 *.suo
+.vs/tmp/v14/.suo
