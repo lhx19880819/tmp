@@ -103,9 +103,17 @@ namespace UnityStandardAssets.CrossPlatformInput
 		}
 
 
-		public void OnPointerDown(PointerEventData data)
+	    private bool IsOnPointerDown = false;
+
+        public void OnPointerDown(PointerEventData data)
 		{
-		    m_StartPos = data.position;
+		    if (IsOnPointerDown)
+		    {
+		        return;
+		    }
+		    IsOnPointerDown = true;
+
+            m_StartPos = data.position;
 
             Delta = Vector2.zero;
 			m_Dragging = true;
@@ -163,6 +171,8 @@ namespace UnityStandardAssets.CrossPlatformInput
 		    Delta = Vector2.zero;
 
 		    m_StartPos = data.position;
+
+		    IsOnPointerDown = false;
         }
 
 		void OnDisable()
@@ -174,15 +184,21 @@ namespace UnityStandardAssets.CrossPlatformInput
 				CrossPlatformInputManager.UnRegisterVirtualAxis(verticalAxisName);
 		}
 
-	    public void OnDrag(PointerEventData data)
+        public void OnDrag(PointerEventData data)
 	    {
+	        if (m_Id != data.pointerId)
+	        {
+	            return;
+	        }
+
 	        Delta = data.position - m_StartPos;
 	        m_StartPos = data.position;
-	    }
+	        //UpdateVirtualAxes(new Vector3(Delta.x * Xsensitivity, Delta.y * Ysensitivity, 0));
+        }
 
         void Update()
-	    {
-	        aInput.Instance.RotateCamera(Delta.x * Xsensitivity, Delta.y * Ysensitivity);
+        {
+            aInput.Instance.RotateCamera(Delta.x * Xsensitivity, Delta.y * Ysensitivity);
         }
     }
 }
