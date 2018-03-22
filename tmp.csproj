@@ -225,7 +225,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\DarkSouls\Plugins\Level\FPSCounter.cs" />
     <Compile Include="Assets\DarkSouls\Scripts\aController.cs" />
     <Compile Include="Assets\DarkSouls\Scripts\aInput.cs" />
     <Compile Include="Assets\DarkSouls\Scripts\TouchPad.cs" />
@@ -284,6 +283,7 @@
     <Compile Include="Assets\DarkSouls\Standard Assets\Utility\TimedObjectDestructor.cs" />
     <Compile Include="Assets\DarkSouls\Standard Assets\Utility\WaypointCircuit.cs" />
     <Compile Include="Assets\DarkSouls\Standard Assets\Utility\WaypointProgressTracker.cs" />
+    <Compile Include="Assets\DarkSouls\ThirdParty\Level\FPSCounter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\DarkSouls\Standard Assets\Cameras\CameraGuidelines.txt" />
