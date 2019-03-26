@@ -6,5 +6,5 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/2.unity
-    guid: 1e6104cd9a46f7e4e8bd1f1dc625fee8
+    path: Assets/DarkSouls/Scenes/1.unity
+    guid: 3638a0a227dd0804f8dd09eecc7bcaab
