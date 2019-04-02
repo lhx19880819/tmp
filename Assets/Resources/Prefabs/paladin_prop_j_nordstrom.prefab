@@ -2128,7 +2128,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!95 &95221100946288778
 Animator:
   serializedVersion: 3
@@ -2141,7 +2141,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 9d68c1649a6e75e4e9dc4174be8c97ad, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
@@ -2157,9 +2157,44 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff1a43be08a51bd4186ead1322d9a11a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0
-  direction: 0
-  verticalVelocity: 0
+  m_MoveSpeed: 1
+  m_TurnSpeed: 0.1
+  m_TurnSmoothing: 0
+  m_TiltMax: 40
+  m_TiltMin: 50
+  m_LockCursor: 0
+  m_VerticalAutoReturn: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  jumpAirControl: 1
+  jumpTimer: 0.16
+  jumpCounter: 0
+  jumpForward: 5
+  jumpHeight: 5
+  groundMinDistance: 0.2
+  groundMaxDistance: 0.5
+  stepOffsetEnd: 0.45
+  stepOffsetStart: 0.05
+  stepSmooth: 4
+  slopeLimit: 45
+  extraGravity: -13
+  jumpExtraGravity: -17
+  ragdollVel: -16
+  m_rotateTurn: 60
+  frictionPhysics: {fileID: 0}
+  maxFrictionPhysics: {fileID: 0}
+  slippyPhysics: {fileID: 0}
+  colliderRadius: 0
+  colliderHeight: 0
+  colliderCenter: {x: 0, y: 0, z: 0}
+  freeSpeed:
+    rotationSpeed: 10
+    walkByDefault: 0
+    walkSpeed: 2
+    runningSpeed: 3
+    sprintSpeed: 4
+    crouchSpeed: 2
   isGrounded: 0
   isCrouching: 0
   inCrouchArea: 0
@@ -2174,28 +2209,12 @@ MonoBehaviour:
   quickStop: 0
   landHigh: 0
   customAction: 0
-  lockMovement: 0
-  lockInStrafe: 0
-  freeSpeed:
-    rotationSpeed: 10
-    walkByDefault: 0
-    walkSpeed: 2
-    runningSpeed: 3
-    sprintSpeed: 4
-    crouchSpeed: 2
   targetDirection: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   strafeMagnitude: 0
   freeRotation: {x: 0, y: 0, z: 0, w: 0}
   keepDirection: 0
   oldInput: {x: 0, y: 0}
-  m_MoveSpeed: 1
-  m_TurnSpeed: 1.5
-  m_TurnSmoothing: 0
-  m_TiltMax: 75
-  m_TiltMin: 45
-  m_LockCursor: 0
-  m_VerticalAutoReturn: 0
 --- !u!136 &136083851910211192
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -2205,10 +2224,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.4
-  m_Height: 2
+  m_Radius: 0.29
+  m_Height: 1.8
   m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!137 &137035160349450022
 SkinnedMeshRenderer:
   m_ObjectHideFlags: 1

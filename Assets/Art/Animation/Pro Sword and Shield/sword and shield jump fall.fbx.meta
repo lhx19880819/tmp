@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 49caa08da9e562a4a9e3309c3c0ef3a6
+guid: 7b7c84f9fa85ab74481344299e288c9f
 ModelImporter:
   serializedVersion: 22
   fileIDToRecycleName:
@@ -139,7 +139,7 @@ ModelImporter:
     400130: Spine2
     400132: //RootNode
     400134: Sword_joint
-    7400000: jump
+    7400000: fall
     9500000: //RootNode
   externalObjects: {}
   materials:
@@ -169,18 +169,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: jump
+      name: fall
       takeName: mixamo.com
-      firstFrame: 0
-      lastFrame: 29
+      firstFrame: 14
+      lastFrame: 14.1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 1
       loopBlendPositionY: 1
       loopBlendPositionXZ: 1

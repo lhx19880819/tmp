@@ -5,6 +5,7 @@ namespace Assets.Scripts.Player
 {
     public partial class AInput
     {
+        [Header("Camera")]
         [SerializeField]
         private float m_MoveSpeed = 1f;                      // How fast the rig will move to keep up with the target's position.
         [Range(0f, 10f)]
@@ -28,6 +29,12 @@ namespace Assets.Scripts.Player
         private Quaternion m_PivotTargetRot;
         private Quaternion m_TransformTargetRot;
         Transform m_Pivot, m_CamRig;
+
+        private void InitCamera()
+        {
+            m_Pivot = Camera.main.transform.parent;
+            m_CamRig = Camera.main.transform.parent.parent;
+        }
 
         private void UpdateCamera()
         {

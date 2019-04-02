@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
 namespace Assets.Scripts.Player
@@ -21,11 +22,13 @@ namespace Assets.Scripts.Player
             }
         }
 
+        private bool isDead = false;
+
         void Start()
         {
-            mAnimator = GetComponent<Animator>();
-            m_Pivot = Camera.main.transform.parent;
-            m_CamRig = Camera.main.transform.parent.parent;
+            InitAnimator();
+            InitJump();
+            InitCamera();
         }
 
         private void Update()
@@ -35,8 +38,40 @@ namespace Assets.Scripts.Player
             if (isAttack) return;
 
             UpdateMotor();
+            UpdateAnimator();
 
             UpdateCamera();
+
+            UpdateJump();
+#if UNITY_EDITOR
+            PCInput();
+#endif
+        }
+
+        private void PCInput()
+        {
+            if (Input.GetKeyDown("space"))
+            {
+                Jump();
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                if (isStrafing)
+                {
+                    mAnimator.SetInteger("AttackID", attackId);
+                    mAnimator.SetTrigger("Attack");
+                }
+                else
+                {
+                    SwitchStrafe();
+                    mAnimator.SetInteger("AttackID", attackId);
+                    mAnimator.SetTrigger("Attack");
+                }
+                if (Input.GetMouseButtonDown(0))
+                {
+                    OnDisableAttack();
+                }
+            }
         }
 
         void LateUpdate()

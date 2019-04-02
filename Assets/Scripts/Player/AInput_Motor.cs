@@ -13,18 +13,22 @@ namespace Assets.Scripts.Player
             [Tooltip("Character will walk by default and run when the sprint input is pressed. The Sprint animation will not play")]
             public bool walkByDefault = false;
             [Tooltip("Speed to Walk using rigibody force or extra speed if you're using RootMotion")]
-            public float walkSpeed = 2f;
+            public float walkForwardSpeed = 2f;
+            [Tooltip("Speed to Walk using rigibody force or extra speed if you're using RootMotion")]
+            public float walkBackwardSpeed = 2f;
             [Tooltip("Speed to Run using rigibody force or extra speed if you're using RootMotion")]
             public float runningSpeed = 3f;
             [Tooltip("Speed to Sprint using rigibody force or extra speed if you're using RootMotion")]
             public float sprintSpeed = 4f;
             [Tooltip("Speed to Crouch using rigibody force or extra speed if you're using RootMotion")]
             public float crouchSpeed = 2f;
+            [Tooltip("Speed to Crouch Sprint using rigibody force or extra speed if you're using RootMotion")]
+            public float crouchSprintSpeed = 2f;
         }
-        private Animator mAnimator;
-        private float speed, direction, verticalVelocity; 
-        private float dampTIme = 0.2f;
-        private Vector2 input;
+
+        [Header("Motor")]
+        public bool useRootMotion = false;
+        public vMovementSpeed freeSpeed, strafeSpeed;
 
         [HideInInspector]
         public bool
@@ -47,7 +51,6 @@ namespace Assets.Scripts.Player
 
         [HideInInspector]
         public bool customAction;
-        public vMovementSpeed freeSpeed;
         [HideInInspector]
         public bool actions
         {
@@ -58,6 +61,8 @@ namespace Assets.Scripts.Player
         }
 
         #region Direction Variables
+        [HideInInspector]
+        public bool forceRootMotion;
         [HideInInspector]
         public Vector3 targetDirection;
         [HideInInspector]
@@ -70,7 +75,23 @@ namespace Assets.Scripts.Player
         public bool keepDirection;
         [HideInInspector]
         public Vector2 oldInput;
+        [HideInInspector]
+        public Vector2 input;
+        [HideInInspector]
+        public Vector2 inputAir;                               // generate input for the controller    
+        [HideInInspector]
+        public float velocity;                               // velocity to apply to rigdibody
         #endregion
+
+        private float speed, direction, verticalVelocity;
+        private float dampTIme = 0.2f;
+
+        protected float mForwardSpeed = 4.0f;
+        protected float mBackwardSpeed = 3.2f;
+        protected float mCrouchForward = 3.0f;
+        protected float mCrouchBackward = 2.3f;
+        protected float mGlideForward = 2.3f;
+        protected float mBailOutForward = 2.3f;
 
         private void UpdateMotor()
         {
@@ -80,8 +101,6 @@ namespace Assets.Scripts.Player
             input.y = v;
 
             ControlLocomotion();
-
-            LocomotionAnimation();
         }
 
         private void ControlLocomotion()
@@ -94,16 +113,6 @@ namespace Assets.Scripts.Player
             {
                 FreeMovement();
             }
-        }
-
-        private void LocomotionAnimation()
-        {
-            if (isStrafing)
-            {
-                // strafe movement get the input 1 or -1
-                mAnimator.SetFloat("InputHorizontal", direction, dampTIme, Time.deltaTime);
-            }
-            mAnimator.SetFloat("InputVertical", speed, dampTIme, Time.deltaTime);
         }
 
         private void FreeMovement()
@@ -163,6 +172,201 @@ namespace Assets.Scripts.Player
             direction = _direction;
             var newInput = new Vector2(speed, direction);
             strafeMagnitude = Mathf.Clamp(newInput.magnitude, 0, limitInput);
+        }
+
+        public void OnAnimatorMove()
+        {
+            if (!this.enabled) return;
+
+            // we implement this function to override the default root motion.
+            // this allows us to modify the positional speed before it's applied.
+            if (isGrounded)
+            {
+                transform.rotation = mAnimator.rootRotation;
+
+                //strafe extra speed
+                if (isStrafing)
+                {
+                    var _speed = Mathf.Abs(strafeMagnitude);
+                    float velocity = .0f;
+                    if (input.y > 0 && input.y > input.x)
+                        velocity = isCrouching ? mCrouchForward : mForwardSpeed;
+                    else
+                        velocity = isCrouching ? mCrouchBackward : mBackwardSpeed;
+                    float fWalkSpeed = input.y > 0 ? strafeSpeed.walkForwardSpeed : strafeSpeed.walkBackwardSpeed;
+                    if (isCrouching)
+                    {
+                        if (_speed <= 0.5f)
+                            ControlSpeed(strafeSpeed.crouchSpeed * velocity);
+                        else if (_speed <= 1.0f)
+                            ControlSpeed(velocity);
+                        else
+                            ControlSpeed(strafeSpeed.crouchSprintSpeed * velocity);
+                    }
+                    else
+                    {
+                        if (_speed <= 0.5f)
+                            //ControlSpeed(strafeSpeed.walkForwardSpeed * velocity);
+                            ControlSpeed(fWalkSpeed * velocity);
+                        else if (_speed <= 1f)
+                            ControlSpeed(velocity);
+                        else
+                            ControlSpeed(strafeSpeed.sprintSpeed * velocity);
+                    }
+
+                }
+                else if (!isStrafing)
+                {
+                    //free extra speed
+                    if (speed <= 0.5f)
+                        ControlSpeed(freeSpeed.walkForwardSpeed);
+                    else if (speed > 0.5 && speed <= 1f)
+                        ControlSpeed(freeSpeed.runningSpeed);
+                    else
+                        ControlSpeed(freeSpeed.sprintSpeed);
+
+                    if (isCrouching)
+                        ControlSpeed(freeSpeed.crouchSpeed);
+                }
+            }
+            else if (IsAirMoving())
+            {
+                if (IsGlide())
+                {
+                    float velocity = mGlideForward;
+                    ControlSpeed(velocity);
+                }
+                else
+                {
+                    float velocity = inputAir.y > 0 ? mBailOutForward : .0f;
+                    ControlSpeed(velocity);
+                }
+
+            }
+        }
+
+        public virtual void ControlSpeed(float velocity)
+        {
+            if (Time.deltaTime == 0 || isRolling) return;
+
+            // use RootMotion and extra speed values to move the character
+            if (useRootMotion && !actions && !customAction)
+            {
+                this.velocity = velocity;
+                var deltaPosition = new Vector3(mAnimator.deltaPosition.x, transform.position.y, mAnimator.deltaPosition.z);
+                Vector3 v = (deltaPosition * (velocity > 0 ? velocity : 1f)) / Time.deltaTime;
+                v.y = _rigidbody.velocity.y;
+                _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, v, 20f * Time.deltaTime);
+            }
+            // use only RootMotion 
+            else if (actions || customAction || lockMovement || forceRootMotion)
+            {
+                this.velocity = velocity;
+                Vector3 v = Vector3.zero;
+                v.y = _rigidbody.velocity.y;
+                _rigidbody.velocity = v;
+                transform.position = mAnimator.rootPosition;
+                if (forceRootMotion)
+                    transform.rotation = mAnimator.rootRotation;
+            }
+            else if (IsAirMoving())
+            {
+                AirMoveVelocity(velocity);
+            }
+            //use only Rigibody Force to move the character (ideal for 'inplace' animations and better behaviour in general) 
+            else
+            {
+                if (isStrafing)
+                {
+                    StrafeVelocity(velocity);
+                }
+                else
+                {
+                    FreeVelocity(velocity);
+                }
+            }
+        }
+
+        protected virtual void StrafeVelocity(float velocity)
+        {
+            if (lockMovement)
+            {
+                return;
+            }
+            float fMoveYEx = .0f;
+            float fMoveXEx = .0f;
+//            if (m_bAutoMoveByOnPerson)
+//            {
+//                if (_rigidbody.velocity.magnitude < .1f)
+//                {
+//                    ++m_nMoveType;
+//                    m_nMoveType = m_nMoveType % (int)(AutoMoveOnPerson.MoveMax);
+//                }
+//                switch (m_nMoveType)
+//                {
+//                    case (int)AutoMoveOnPerson.MoveFront:
+//                        fMoveYEx = 1.0f;
+//                        break;
+//                    case (int)AutoMoveOnPerson.MoveBack:
+//                        fMoveYEx = -1.0f;
+//                        break;
+//                    case (int)AutoMoveOnPerson.MoveLeft:
+//                        fMoveXEx = 1.0f;
+//                        break;
+//                    case (int)AutoMoveOnPerson.MoveRight:
+//                        fMoveXEx = -1.0f;
+//                        break;
+//                    default:
+//                        break;
+//
+//                }
+//                velocity = 1.0f;
+//            }
+            Vector3 v = Vector3.zero;
+            if (direction > 1.0f || speed > 1.0f)
+            {
+                v = (transform.TransformDirection(new Vector3(direction + fMoveXEx, 0, speed + fMoveYEx).normalized) * (velocity > 0 ? velocity : 1f));
+            }
+            else
+            {
+                v = transform.TransformDirection(new Vector3(direction + fMoveXEx, 0, speed + fMoveYEx) * (velocity > 0 ? velocity : 1f));
+            }
+            // 根据人物确认是否跑动
+            Vector3 vReal = _rigidbody.velocity;
+            vReal.y = .0f;
+            if (vReal.magnitude > .0f && v.magnitude > .0f)
+            {
+                float fMultiple = vReal.magnitude / v.magnitude;
+                fMultiple = Mathf.Clamp(fMultiple, .0f, 1.0f);
+                float fSpeed = speed * fMultiple;
+                float fDirection = direction * fMultiple;
+                var newInput = new Vector2(fSpeed, fDirection);
+                strafeMagnitude = newInput.magnitude;
+                if (strafeMagnitude > 1.0f && fSpeed < 1.1f)
+                {
+                    strafeMagnitude = 1.0f;
+                }
+            }
+            else
+            {
+                strafeMagnitude = .0f;
+            }
+            //
+            v.y = _rigidbody.velocity.y;
+            if (v.magnitude > 3.5f)
+            {
+                int i = 0;
+                ++i;
+            }
+            _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, v, 20f * Time.deltaTime);
+        }
+
+        protected virtual void FreeVelocity(float velocity)
+        {
+            var _targetVelocity = transform.forward * velocity * speed;
+            _targetVelocity.y = _rigidbody.velocity.y;
+            _rigidbody.velocity = _targetVelocity;
+            _rigidbody.AddForce(transform.forward * (velocity * speed) * Time.deltaTime, ForceMode.VelocityChange);
         }
     }//class end
 }
