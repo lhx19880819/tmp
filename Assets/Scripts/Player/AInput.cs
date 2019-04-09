@@ -32,7 +32,7 @@ namespace Assets.Scripts.Player
 #if UNITY_EDITOR
             m_TurnSpeed = 2;
 #else
-            m_TurnSpeed = 0.1;
+            m_TurnSpeed = 0.1f;
 #endif
         }
 
