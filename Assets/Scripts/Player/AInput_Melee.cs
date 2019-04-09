@@ -12,17 +12,7 @@ namespace Assets.Scripts.Player
         private void UpdateMelee()
         {
             bool bAttack = CrossPlatformInputManager.GetButtonDown("Attack");
-            if (isStrafing && bAttack)
-            {
-                mAnimator.SetInteger("AttackID", attackId);
-                mAnimator.SetTrigger("Attack");
-            }
-            else if (bAttack)
-            {
-                SwitchStrafe();
-                mAnimator.SetInteger("AttackID", attackId);
-                mAnimator.SetTrigger("Attack");
-            }
+            Attack(bAttack);
         }
 
         public void SwitchStrafe()
@@ -50,6 +40,25 @@ namespace Assets.Scripts.Player
         public void ResetAttackTriggers()
         {
             mAnimator.ResetTrigger("Attack");
+        }
+
+        private void Attack(bool bAttack = true)
+        {
+            if (!isGrounded)
+            {
+                return;
+            }
+            if (isStrafing && bAttack)
+            {
+                mAnimator.SetInteger("AttackID", attackId);
+                mAnimator.SetTrigger("Attack");
+            }
+            else if (bAttack)
+            {
+                SwitchStrafe();
+                mAnimator.SetInteger("AttackID", attackId);
+                mAnimator.SetTrigger("Attack");
+            }
         }
     }//class end
 }

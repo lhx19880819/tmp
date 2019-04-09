@@ -100,6 +100,13 @@ namespace Assets.Scripts.Player
             input.x = h;
             input.y = v;
 
+            if (!isGrounded && !jumpAirControl || lockMovement)
+            {
+                mAnimator.SetFloat("InputMagnitude", 0);
+                direction = 0;
+                speed = 0;
+                return;
+            }
             ControlLocomotion();
         }
 
@@ -174,6 +181,10 @@ namespace Assets.Scripts.Player
 
         public void OnAnimatorMove()
         {
+            if (!isGrounded && !jumpAirControl || lockMovement)
+            {
+                return;
+            }
             if (!this.enabled) return;
 
             // we implement this function to override the default root motion.
@@ -305,33 +316,33 @@ namespace Assets.Scripts.Player
             }
             float fMoveYEx = .0f;
             float fMoveXEx = .0f;
-//            if (m_bAutoMoveByOnPerson)
-//            {
-//                if (_rigidbody.velocity.magnitude < .1f)
-//                {
-//                    ++m_nMoveType;
-//                    m_nMoveType = m_nMoveType % (int)(AutoMoveOnPerson.MoveMax);
-//                }
-//                switch (m_nMoveType)
-//                {
-//                    case (int)AutoMoveOnPerson.MoveFront:
-//                        fMoveYEx = 1.0f;
-//                        break;
-//                    case (int)AutoMoveOnPerson.MoveBack:
-//                        fMoveYEx = -1.0f;
-//                        break;
-//                    case (int)AutoMoveOnPerson.MoveLeft:
-//                        fMoveXEx = 1.0f;
-//                        break;
-//                    case (int)AutoMoveOnPerson.MoveRight:
-//                        fMoveXEx = -1.0f;
-//                        break;
-//                    default:
-//                        break;
-//
-//                }
-//                velocity = 1.0f;
-//            }
+            //            if (m_bAutoMoveByOnPerson)
+            //            {
+            //                if (_rigidbody.velocity.magnitude < .1f)
+            //                {
+            //                    ++m_nMoveType;
+            //                    m_nMoveType = m_nMoveType % (int)(AutoMoveOnPerson.MoveMax);
+            //                }
+            //                switch (m_nMoveType)
+            //                {
+            //                    case (int)AutoMoveOnPerson.MoveFront:
+            //                        fMoveYEx = 1.0f;
+            //                        break;
+            //                    case (int)AutoMoveOnPerson.MoveBack:
+            //                        fMoveYEx = -1.0f;
+            //                        break;
+            //                    case (int)AutoMoveOnPerson.MoveLeft:
+            //                        fMoveXEx = 1.0f;
+            //                        break;
+            //                    case (int)AutoMoveOnPerson.MoveRight:
+            //                        fMoveXEx = -1.0f;
+            //                        break;
+            //                    default:
+            //                        break;
+            //
+            //                }
+            //                velocity = 1.0f;
+            //            }
             Vector3 v = Vector3.zero;
             if (direction > 1.0f || speed > 1.0f)
             {

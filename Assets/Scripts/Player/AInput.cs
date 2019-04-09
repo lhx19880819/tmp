@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -32,7 +33,7 @@ namespace Assets.Scripts.Player
 #if UNITY_EDITOR
             m_TurnSpeed = 2;
 #else
-            m_TurnSpeed = 0.1f;
+            m_TurnSpeed = 0.2f;
 #endif
         }
 
@@ -40,6 +41,13 @@ namespace Assets.Scripts.Player
         {
 #if UNITY_EDITOR
             PCInput();
+            if (Cursor.visible)
+            {
+                mAnimator.SetFloat("InputMagnitude", 0);
+                direction = 0;
+                speed = 0;
+                return;
+            }
 #endif
             UpdateMelee();
 
@@ -53,6 +61,7 @@ namespace Assets.Scripts.Player
             UpdateJump();
         }
 
+#if UNITY_EDITOR
         private void PCInput()
         {
             //
@@ -68,6 +77,13 @@ namespace Assets.Scripts.Player
                     Cursor.lockState = CursorLockMode.Locked;
                 }
             }
+            if (Cursor.visible)
+            {
+                mAnimator.SetFloat("InputMagnitude", 0);
+                direction = 0;
+                speed = 0;
+                return;
+            }
             //
             if (Input.GetKeyDown("space"))
             {
@@ -77,17 +93,7 @@ namespace Assets.Scripts.Player
             //
             if (Input.GetMouseButtonDown(0))
             {
-                if (isStrafing)
-                {
-                    mAnimator.SetInteger("AttackID", attackId);
-                    mAnimator.SetTrigger("Attack");
-                }
-                else
-                {
-                    SwitchStrafe();
-                    mAnimator.SetInteger("AttackID", attackId);
-                    mAnimator.SetTrigger("Attack");
-                }
+                Attack();
             }
 
             //
@@ -96,10 +102,31 @@ namespace Assets.Scripts.Player
                 SwitchStrafe();
             }
         }
+#endif
 
         void LateUpdate()
         {
+#if UNITY_EDITOR
+            if (Cursor.visible)
+            {
+                mAnimator.SetFloat("InputMagnitude", 0);
+                direction = 0;
+                speed = 0;
+                return;
+            }
+#endif
             CameraInput();
+        }
+
+        public void SetLockMove(bool b, float f = 0)
+        {
+            StartCoroutine(LockMoveDelay(b, f));
+        }
+
+        private IEnumerator LockMoveDelay(bool b, float f)
+        {
+            yield return new WaitForSecondsRealtime(f);
+            lockMovement = b;
         }
     }//class end
 }
