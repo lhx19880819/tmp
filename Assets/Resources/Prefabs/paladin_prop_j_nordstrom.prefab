@@ -2158,7 +2158,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_MoveSpeed: 1
-  m_TurnSpeed: 0.1
+  m_TurnSpeed: 2
   m_TurnSmoothing: 0
   m_TiltMax: 40
   m_TiltMin: 50
@@ -2168,10 +2168,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   jumpAirControl: 1
-  jumpTimer: 0.16
+  jumpTimer: 0.2
   jumpCounter: 0
   jumpForward: 5
-  jumpHeight: 5
+  jumpHeight: 7
   groundMinDistance: 0.2
   groundMaxDistance: 0.5
   stepOffsetEnd: 0.45
@@ -2188,13 +2188,25 @@ MonoBehaviour:
   colliderRadius: 0
   colliderHeight: 0
   colliderCenter: {x: 0, y: 0, z: 0}
+  useRootMotion: 0
   freeSpeed:
     rotationSpeed: 10
     walkByDefault: 0
-    walkSpeed: 2
+    walkForwardSpeed: 2
+    walkBackwardSpeed: 2
     runningSpeed: 3
     sprintSpeed: 4
     crouchSpeed: 2
+    crouchSprintSpeed: 2
+  strafeSpeed:
+    rotationSpeed: 10
+    walkByDefault: 0
+    walkForwardSpeed: 2
+    walkBackwardSpeed: 2
+    runningSpeed: 3
+    sprintSpeed: 4
+    crouchSpeed: 2
+    crouchSprintSpeed: 2
   isGrounded: 0
   isCrouching: 0
   inCrouchArea: 0
@@ -2209,12 +2221,16 @@ MonoBehaviour:
   quickStop: 0
   landHigh: 0
   customAction: 0
+  forceRootMotion: 0
   targetDirection: {x: 0, y: 0, z: 0}
   targetRotation: {x: 0, y: 0, z: 0, w: 0}
   strafeMagnitude: 0
   freeRotation: {x: 0, y: 0, z: 0, w: 0}
   keepDirection: 0
   oldInput: {x: 0, y: 0}
+  input: {x: 0, y: 0}
+  inputAir: {x: 0, y: 0}
+  velocity: 0
 --- !u!136 &136083851910211192
 CapsuleCollider:
   m_ObjectHideFlags: 1

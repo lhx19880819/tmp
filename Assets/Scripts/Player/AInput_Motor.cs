@@ -154,8 +154,6 @@ namespace Assets.Scripts.Player
 
         public virtual void StrafeMovement()
         {
-            isStrafing = true;
-
             StrafeLimitSpeed(.8f);
 
             if (stopMove) strafeMagnitude = 0f;
@@ -241,7 +239,19 @@ namespace Assets.Scripts.Player
                     float velocity = inputAir.y > 0 ? mBailOutForward : .0f;
                     ControlSpeed(velocity);
                 }
+            }
+            else
+            {
+                //free extra speed
+                if (speed <= 0.5f)
+                    ControlSpeed(freeSpeed.walkForwardSpeed);
+                else if (speed > 0.5 && speed <= 1f)
+                    ControlSpeed(freeSpeed.runningSpeed);
+                else
+                    ControlSpeed(freeSpeed.sprintSpeed);
 
+                if (isCrouching)
+                    ControlSpeed(freeSpeed.crouchSpeed);
             }
         }
 

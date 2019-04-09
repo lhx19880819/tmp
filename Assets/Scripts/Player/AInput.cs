@@ -29,10 +29,18 @@ namespace Assets.Scripts.Player
             InitAnimator();
             InitJump();
             InitCamera();
+#if UNITY_EDITOR
+            m_TurnSpeed = 2;
+#else
+            m_TurnSpeed = 0.1;
+#endif
         }
 
         private void Update()
         {
+#if UNITY_EDITOR
+            PCInput();
+#endif
             UpdateMelee();
 
             if (isAttack) return;
@@ -43,17 +51,30 @@ namespace Assets.Scripts.Player
             UpdateCamera();
 
             UpdateJump();
-#if UNITY_EDITOR
-            PCInput();
-#endif
         }
 
         private void PCInput()
         {
+            //
+            if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                Cursor.visible = !Cursor.visible;
+                if (Cursor.visible)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                }
+            }
+            //
             if (Input.GetKeyDown("space"))
             {
                 Jump();
             }
+
+            //
             if (Input.GetMouseButtonDown(0))
             {
                 if (isStrafing)
@@ -67,10 +88,12 @@ namespace Assets.Scripts.Player
                     mAnimator.SetInteger("AttackID", attackId);
                     mAnimator.SetTrigger("Attack");
                 }
-                if (Input.GetMouseButtonDown(0))
-                {
-                    OnDisableAttack();
-                }
+            }
+
+            //
+            if (Input.GetMouseButtonDown(1))
+            {
+                SwitchStrafe();
             }
         }
 

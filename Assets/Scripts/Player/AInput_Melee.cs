@@ -27,6 +27,7 @@ namespace Assets.Scripts.Player
 
         public void SwitchStrafe()
         {
+            if (customAction || isAttack) return;
             isStrafing = !isStrafing;
             mAnimator.SetBool("IsStrafing", isStrafing);
         }

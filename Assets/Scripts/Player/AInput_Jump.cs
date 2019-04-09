@@ -89,7 +89,7 @@ namespace Assets.Scripts.Player
 
         public void Jump()
         {
-            if (customAction) return;
+            if (customAction || isAttack) return;
 
             bool jumpConditions = !isCrouching && isGrounded && !actions && !isJumping;
             if (!jumpConditions) return;
