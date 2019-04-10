@@ -100,7 +100,7 @@ namespace Assets.Scripts.Player
             input.x = h;
             input.y = v;
 
-            if (!isGrounded && !jumpAirControl || lockMovement)
+            if (!isGrounded && !jumpAirControl || lockMovement || isAttack)
             {
                 mAnimator.SetFloat("InputMagnitude", 0);
                 direction = 0;
@@ -181,6 +181,12 @@ namespace Assets.Scripts.Player
 
         public void OnAnimatorMove()
         {
+            if (isAttack)
+            {
+                transform.rotation = mAnimator.rootRotation;
+                transform.position = mAnimator.rootPosition;
+                return;
+            }
             if (!isGrounded && !jumpAirControl || lockMovement)
             {
                 return;

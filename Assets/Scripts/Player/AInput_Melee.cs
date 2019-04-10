@@ -24,12 +24,20 @@ namespace Assets.Scripts.Player
 
         public void OnEnableAttack()
         {
+            mAnimator.applyRootMotion = true;
             combo++;
             isAttack = true;
+
+
+            mAnimator.SetFloat("InputMagnitude", 0);
+            direction = 0;
+            speed = 0;
+            _rigidbody.velocity = Vector3.zero;
         }
 
         public void OnDisableAttack()
         {
+            mAnimator.applyRootMotion = false;
             combo--;
             if (combo == 0)
             {
