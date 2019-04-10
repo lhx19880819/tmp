@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using Assets.Scripts.Player;
 using UnityEngine;
 
-public class LandingState : StateMachineBehaviour {
-
+public class LandingState : StateMachineBehaviour
+{
+    public float timeCanMove = 0.3f;
 	 // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
 	override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex) {
         AInput input = animator.GetComponent<AInput>();
         if (input)
         {
             input.SetLockMove(true);
-            input.SetLockMove(false, .3f);
+            input.SetLockMove(false, timeCanMove);
         }
     }
 

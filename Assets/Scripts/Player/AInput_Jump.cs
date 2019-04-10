@@ -138,7 +138,7 @@ namespace Assets.Scripts.Player
                 // ray for SphereCast
                 Ray ray2 = new Ray(pos, -Vector3.up);
                 // raycast for check the ground distance
-                if (Physics.Raycast(ray1, out groundHit, colliderHeight / 2 + 2f, groundLayer))
+                if (Physics.Raycast(ray1, out groundHit, colliderHeight / 2 + 4f, groundLayer))
                     dist = transform.position.y - groundHit.point.y;
                 // sphere cast around the base of the capsule to check the ground distance
                 if (Physics.SphereCast(ray2, radius, out groundHit, _capsuleCollider.radius + 2f, groundLayer))

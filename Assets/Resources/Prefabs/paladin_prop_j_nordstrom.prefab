@@ -1249,7 +1249,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1936784433966880}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.39, y: 0, z: 12.24}
+  m_LocalPosition: {x: -2.607, y: 9.24, z: 11.311}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4442346205325522}
@@ -2167,7 +2167,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 1
-  jumpAirControl: 1
+  jumpAirControl: 0
   jumpTimer: 0.2
   jumpCounter: 0
   jumpForward: 5
@@ -2190,14 +2190,14 @@ MonoBehaviour:
   colliderCenter: {x: 0, y: 0, z: 0}
   useRootMotion: 0
   freeSpeed:
-    rotationSpeed: 10
+    rotationSpeed: 15
     walkByDefault: 0
-    walkForwardSpeed: 2
-    walkBackwardSpeed: 2
-    runningSpeed: 3
-    sprintSpeed: 4
-    crouchSpeed: 2
-    crouchSprintSpeed: 2
+    walkForwardSpeed: 3
+    walkBackwardSpeed: 3
+    runningSpeed: 4
+    sprintSpeed: 5
+    crouchSpeed: 3
+    crouchSprintSpeed: 3
   strafeSpeed:
     rotationSpeed: 10
     walkByDefault: 0

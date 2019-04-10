@@ -120,7 +120,14 @@ namespace Assets.Scripts.Player
 
         public void SetLockMove(bool b, float f = 0)
         {
-            StartCoroutine(LockMoveDelay(b, f));
+            if (f == 0)
+            {
+                lockMovement = b;
+            }
+            else
+            {
+                StartCoroutine(LockMoveDelay(b, f));
+            }
         }
 
         private IEnumerator LockMoveDelay(bool b, float f)

@@ -11,8 +11,11 @@ namespace Assets.Scripts.Player
 
         private void UpdateMelee()
         {
-            bool bAttack = CrossPlatformInputManager.GetButtonDown("Attack");
-            Attack(bAttack);
+            if (isGrounded)
+            {
+                bool bAttack = CrossPlatformInputManager.GetButtonDown("Attack");
+                Attack(bAttack);
+            }
         }
 
         public void SwitchStrafe()
@@ -24,7 +27,6 @@ namespace Assets.Scripts.Player
 
         public void OnEnableAttack()
         {
-            mAnimator.applyRootMotion = true;
             combo++;
             isAttack = true;
 
@@ -37,7 +39,6 @@ namespace Assets.Scripts.Player
 
         public void OnDisableAttack()
         {
-            mAnimator.applyRootMotion = false;
             combo--;
             if (combo == 0)
             {
