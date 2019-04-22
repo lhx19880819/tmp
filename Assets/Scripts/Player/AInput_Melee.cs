@@ -9,6 +9,8 @@ namespace Assets.Scripts.Player
         private int attackId = 0;
         private bool isAttack = false;
         private int combo = 0;
+//        public GenericInput AttackInput = new GenericInput("Attack", "RT", "RT");
+//        public GenericInput StrafeInput = new GenericInput("q", "RB", "RB");
 
         private void UpdateMelee()
         {
@@ -16,10 +18,10 @@ namespace Assets.Scripts.Player
             {
                 bool bAttack = CrossPlatformInputManager.GetButtonDown("Attack");
                 Attack(bAttack);
-//                if (CrossPlatformInputManager.GetButtonDown("Strafe"))
-//                {
-//                    SwitchStrafe();
-//                }
+                if (CrossPlatformInputManager.GetButtonDown("Strafe"))
+                {
+                    SwitchStrafe();
+                }
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using Invector.vCharacterController;
 using UnityEngine;
+using UnityStandardAssets.CrossPlatformInput;
 
 namespace Assets.Scripts.Player
 {
@@ -63,7 +64,7 @@ namespace Assets.Scripts.Player
         public CapsuleCollider _capsuleCollider;
         float groundDistance;
 
-        public GenericInput JumpInput = new GenericInput("Space", "X", "X");
+//        public GenericInput JumpInput = new GenericInput("Space", "X", "X");
 
         private void InitJump()
         {
@@ -125,6 +126,11 @@ namespace Assets.Scripts.Player
 
         private void UpdateJump()
         {
+            //
+            if (CrossPlatformInputManager.GetButtonDown("Jump"))
+            {
+                Jump();
+            }
             CheckGroundDistance();
             CheckGround();
             ControlJumpBehaviour();

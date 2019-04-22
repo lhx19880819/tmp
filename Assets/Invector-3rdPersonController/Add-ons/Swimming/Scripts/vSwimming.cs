@@ -99,7 +99,7 @@ namespace Invector.vCharacterController.vActions
 
         public UnityEvent OnAboveWater;
         public UnityEvent OnUnderWater;
-        public GenericInput JumpInput = new GenericInput("Space", "X", "X");
+//        public GenericInput JumpInput = new GenericInput("Space", "X", "X");
 
         private void Start()
         {
@@ -359,7 +359,7 @@ namespace Invector.vCharacterController.vActions
             }
 
             // extra rigibody up velocity                 
-            if (JumpInput.GetButtonDown() && upConditions)
+            if (CrossPlatformInputManager.GetButtonDown("Jump") && upConditions)
             {
                 var vel = tpInput.Rigidbody.velocity;
                 vel.y = swimUpSpeed;

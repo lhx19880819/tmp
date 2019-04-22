@@ -15,9 +15,6 @@ namespace Invector.CharacterController.Actions
         #region Public variables
 
         public bool autoClimbEdge = true;
-//        public GenericInput climbEdgeInput = new GenericInput("E", "A", "A");
-//        public GenericInput enterExitInput = new GenericInput("Space", "X", "X");
-//        public GenericInput climbJumpInput = new GenericInput("Space", "X", "X");
         public string cameraState = "Default";
         [Range(0, 180)]
         public float minSurfaceAngle = 30, maxSurfaceAngle = 160;
@@ -189,9 +186,9 @@ namespace Invector.CharacterController.Actions
             if (Physics.Raycast(handTargetPosition, transform.forward, out hit, 0.7f, draggableWall) && dragInfo.canGo)
             {
                 dragInfo.position = hit.point;
-                if (Input.GetKeyDown("space") && dragInfo.inDrag && input.magnitude == 0 && Time.time > (oldInput + 0.5f))
+                if (CrossPlatformInputManager.GetButtonDown("Jump") && dragInfo.inDrag && input.magnitude == 0 && Time.time > (oldInput + 0.5f))
                     ExitClimb();
-                else if (dragInfo.canGo && (Input.GetKey("space") || TP_Input.input.y > 0.1f) && !dragInfo.inDrag && Time.time > (oldInput + 0.5f))
+                else if (dragInfo.canGo && (CrossPlatformInputManager.GetButton("Jump") || TP_Input.input.y > 0.1f) && !dragInfo.inDrag && Time.time > (oldInput + 0.5f))
                     EnterClimb();
             }
             ClimbMovement();
@@ -283,7 +280,7 @@ namespace Invector.CharacterController.Actions
         protected virtual void ClimbJumpHandle()
         {
             if (TP_Input.enabled || !TP_Input.mAnimator || !dragInfo.inDrag || inClimbUp) return;
-            if (Input.GetKey("space") && !inClimbJump && input.magnitude > 0 && !TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".ClimbJump"))
+            if (CrossPlatformInputManager.GetButton("Jump") && !inClimbJump && input.magnitude > 0 && !TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".ClimbJump"))
             {
                 var angleBetweenCharacterAndCamera = Vector3.Angle(transform.right, Camera.main.transform.right);
                 var rightDirection = angleBetweenCharacterAndCamera > 60 ? Camera.main.transform.right : transform.right;
@@ -371,7 +368,7 @@ namespace Invector.CharacterController.Actions
 
         private void CheckClimbUp(bool ignoreInput = false)
         {
-            var climbUpConditions = autoClimbEdge ? vertical > 0f : Input.GetKeyDown("space");
+            var climbUpConditions = autoClimbEdge ? vertical > 0f : CrossPlatformInputManager.GetButtonDown("Jump");
 
             if (!canMoveClimb && !inClimbUp && (climbUpConditions || ignoreInput))
             {

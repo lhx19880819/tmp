@@ -90,11 +90,6 @@ namespace Assets.Scripts.Player
                 speed = 0;
                 return;
             }
-            //
-            if (JumpInput.GetButtonDown())
-            {
-                Jump();
-            }
 
             //
             if (Input.GetMouseButtonDown(0))

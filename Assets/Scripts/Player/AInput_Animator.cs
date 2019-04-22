@@ -77,7 +77,7 @@ namespace Assets.Scripts.Player
             mAnimator.SetBool("IsStrafing", isStrafing);
             mAnimator.SetBool("IsCrouching", isCrouching);
             mAnimator.SetBool("IsGrounded", isGrounded);
-            mAnimator.SetBool("isDead", isDead);
+//            mAnimator.SetBool("isDead", isDead);
 
             mAnimator.SetFloat("GroundDistance", groundDistance);
             mAnimator.SetFloat("VerticalVelocity", verticalVelocity);
