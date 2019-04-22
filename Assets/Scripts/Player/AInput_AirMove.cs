@@ -42,10 +42,10 @@ namespace Assets.Scripts.Player
                 fAcceleration = m_fAcceleration_Glide;
                 //v = (transform.TransformDirection(new Vector3(inputAir.x, 0, m_fAirMoving * (1.0f - fRateAirMove))) * (velocity > 0 ? velocity : 1f));
                 v = (transform.TransformDirection(new Vector3(inputAir.x, 0, inputAir.y).normalized) * (velocity > 0 ? velocity : 1f));
-                fSpeedY = _rigidbody.velocity.y;
+                fSpeedY = Rigidbody.velocity.y;
                 if (inputAir.y > 0 && fSpeedY > fMaxFall)
                 {
-                    fSpeedY = _rigidbody.velocity.y - inputAir.y * fAcceleration;
+                    fSpeedY = Rigidbody.velocity.y - inputAir.y * fAcceleration;
                     fSpeedY = fSpeedY < fMaxFall ? fMaxFall : fSpeedY;
                 }
             }
@@ -55,10 +55,10 @@ namespace Assets.Scripts.Player
                 m_fAirMoving = inputAir.y;
                 fAcceleration = m_fAcceleration;
                 v = (transform.TransformDirection(new Vector3(inputAir.x, 0, m_fAirMoving * (1.0f - fRateAirMove))) * (velocity > 0 ? velocity : 1f));
-                fSpeedY = _rigidbody.velocity.y;
+                fSpeedY = Rigidbody.velocity.y;
                 if (inputAir.y > 0 && fSpeedY > fMaxFall)
                 {
-                    fSpeedY = _rigidbody.velocity.y - inputAir.y * fAcceleration;
+                    fSpeedY = Rigidbody.velocity.y - inputAir.y * fAcceleration;
                     fSpeedY = fSpeedY < fMaxFall ? fMaxFall : fSpeedY;
                 }
             }
@@ -71,7 +71,7 @@ namespace Assets.Scripts.Player
             }
             //
             v.y = fSpeedY;
-            _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, v, smooth * Time.deltaTime);
+            Rigidbody.velocity = Vector3.Lerp(Rigidbody.velocity, v, smooth * Time.deltaTime);
             //Debug.Log("speed:" + fSpeedY.ToString());
         }
 

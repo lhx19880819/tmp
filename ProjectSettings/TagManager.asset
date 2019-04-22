@@ -5,6 +5,22 @@ TagManager:
   serializedVersion: 2
   tags:
   - Water
+  - AutoCrouch
+  - Action
+  - ClimbUp
+  - StepUp
+  - JumpOver
+  - Weapon
+  - LookAt
+  - LadderTrigger
+  - PlayerUI
+  - Sters
+  - FreeClimb
+  - Ragdoll
+  - Ignore Ragdoll
+  - Boss
+  - Enemy
+  - CompanionAI
   layers:
   - Default
   - TransparentFX
@@ -15,11 +31,11 @@ TagManager:
   - 
   - 
   - Player
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Enemy
+  - CompanionAI
+  - Triggers
+  - StopMove
+  - HeadTrack
   - 
   - 
   - 

@@ -83,7 +83,7 @@ namespace Assets.Scripts.Player
         public float velocity;                               // velocity to apply to rigdibody
         #endregion
 
-        private float speed, direction, verticalVelocity;
+        public float speed, direction, verticalVelocity;
         private float dampTIme = 0.2f;
 
         protected float mForwardSpeed = 4.0f;
@@ -282,16 +282,16 @@ namespace Assets.Scripts.Player
                 this.velocity = velocity;
                 var deltaPosition = new Vector3(mAnimator.deltaPosition.x, transform.position.y, mAnimator.deltaPosition.z);
                 Vector3 v = (deltaPosition * (velocity > 0 ? velocity : 1f)) / Time.deltaTime;
-                v.y = _rigidbody.velocity.y;
-                _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, v, 20f * Time.deltaTime);
+                v.y = Rigidbody.velocity.y;
+                Rigidbody.velocity = Vector3.Lerp(Rigidbody.velocity, v, 20f * Time.deltaTime);
             }
             // use only RootMotion 
             else if (actions || customAction || lockMovement || forceRootMotion)
             {
                 this.velocity = velocity;
                 Vector3 v = Vector3.zero;
-                v.y = _rigidbody.velocity.y;
-                _rigidbody.velocity = v;
+                v.y = Rigidbody.velocity.y;
+                Rigidbody.velocity = v;
                 transform.position = mAnimator.rootPosition;
                 if (forceRootMotion)
                     transform.rotation = mAnimator.rootRotation;
@@ -359,7 +359,7 @@ namespace Assets.Scripts.Player
                 v = transform.TransformDirection(new Vector3(direction + fMoveXEx, 0, speed + fMoveYEx) * (velocity > 0 ? velocity : 1f));
             }
             // 根据人物确认是否跑动
-            Vector3 vReal = _rigidbody.velocity;
+            Vector3 vReal = Rigidbody.velocity;
             vReal.y = .0f;
             if (vReal.magnitude > .0f && v.magnitude > .0f)
             {
@@ -379,21 +379,21 @@ namespace Assets.Scripts.Player
                 strafeMagnitude = .0f;
             }
             //
-            v.y = _rigidbody.velocity.y;
+            v.y = Rigidbody.velocity.y;
             if (v.magnitude > 3.5f)
             {
                 int i = 0;
                 ++i;
             }
-            _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, v, 20f * Time.deltaTime);
+            Rigidbody.velocity = Vector3.Lerp(Rigidbody.velocity, v, 20f * Time.deltaTime);
         }
 
         protected virtual void FreeVelocity(float velocity)
         {
             var _targetVelocity = transform.forward * velocity * speed;
-            _targetVelocity.y = _rigidbody.velocity.y;
-            _rigidbody.velocity = _targetVelocity;
-            _rigidbody.AddForce(transform.forward * (velocity * speed) * Time.deltaTime, ForceMode.VelocityChange);
+            _targetVelocity.y = Rigidbody.velocity.y;
+            Rigidbody.velocity = _targetVelocity;
+            Rigidbody.AddForce(transform.forward * (velocity * speed) * Time.deltaTime, ForceMode.VelocityChange);
         }
     }//class end
 }

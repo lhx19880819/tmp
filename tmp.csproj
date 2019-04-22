@@ -243,6 +243,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Invector-3rdPersonController\Add-ons\FreeClimb (Beta)\Scripts\vCapsuleHelper.cs" />
+    <Compile Include="Assets\Invector-3rdPersonController\Add-ons\FreeClimb (Beta)\Scripts\vDebugHelper.cs" />
+    <Compile Include="Assets\Invector-3rdPersonController\Add-ons\FreeClimb (Beta)\Scripts\vFreeClimb.cs" />
     <Compile Include="Assets\Scripts\Other\ADestroyGameObject.cs" />
     <Compile Include="Assets\Scripts\Other\vFisherYatesRandom.cs" />
     <Compile Include="Assets\Scripts\Player\AInput.cs" />
@@ -259,6 +262,7 @@
     <Compile Include="Assets\ThirdParty\Level\FPSCounter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\Invector-3rdPersonController\Add-ons\FreeClimb (Beta)\Animations\README.txt" />
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <None Include="Assets\Standard Assets\Characters\RollerBall\RollerBallGuidelines.txt" />

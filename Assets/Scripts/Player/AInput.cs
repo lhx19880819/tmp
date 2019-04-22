@@ -56,8 +56,6 @@ namespace Assets.Scripts.Player
             UpdateMotor();
             UpdateAnimator();
 
-            UpdateCamera();
-
             UpdateJump();
         }
 
@@ -104,7 +102,7 @@ namespace Assets.Scripts.Player
         }
 #endif
 
-        void LateUpdate()
+        public void LateUpdate()
         {
 #if UNITY_EDITOR
             if (Cursor.visible)
@@ -116,6 +114,7 @@ namespace Assets.Scripts.Player
             }
 #endif
             CameraInput();
+            UpdateCamera();
         }
 
         public void SetLockMove(bool b, float f = 0)

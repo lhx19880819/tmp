@@ -54,8 +54,8 @@ namespace Assets.Scripts.Player
         public Vector3 colliderCenter;
 
         RaycastHit groundHit;
-        Rigidbody _rigidbody;                                // access the Rigidbody component
-        CapsuleCollider _capsuleCollider;
+        public Rigidbody Rigidbody;                                // access the Rigidbody component
+        public CapsuleCollider _capsuleCollider;
         float groundDistance;
 
         private void InitJump()
@@ -84,7 +84,7 @@ namespace Assets.Scripts.Player
             colliderCenter = _capsuleCollider.center;
             colliderRadius = _capsuleCollider.radius;
             colliderHeight = _capsuleCollider.height;
-            _rigidbody = GetComponent<Rigidbody>();
+            Rigidbody = GetComponent<Rigidbody>();
         }
 
         public void Jump()
@@ -111,9 +111,9 @@ namespace Assets.Scripts.Player
                 isJumping = false;
             }
             // apply extra force to the jump height   
-            var vel = _rigidbody.velocity;
+            var vel = Rigidbody.velocity;
             vel.y = jumpHeight;
-            _rigidbody.velocity = vel;
+            Rigidbody.velocity = vel;
         }
 
         private void UpdateJump()
@@ -172,7 +172,7 @@ namespace Assets.Scripts.Player
             // we don't want to stick the character grounded if one of these bools is true
             bool checkGroundConditions = !isRolling;
 
-            var magVel = (float)System.Math.Round(new Vector3(_rigidbody.velocity.x, 0, _rigidbody.velocity.z).magnitude, 2);
+            var magVel = (float)System.Math.Round(new Vector3(Rigidbody.velocity.x, 0, Rigidbody.velocity.z).magnitude, 2);
             magVel = Mathf.Clamp(magVel, 0, 1);
 
             var groundCheckDistance = groundMinDistance;
@@ -196,7 +196,7 @@ namespace Assets.Scripts.Player
                     {
                         OnOffGround();
                         // check vertical velocity
-                        verticalVelocity = _rigidbody.velocity.y;
+                        verticalVelocity = Rigidbody.velocity.y;
                         // apply extra gravity when falling
                         // if (!onStep && !isJumping)
                         // {
@@ -213,43 +213,43 @@ namespace Assets.Scripts.Player
                                         float fDiff = verticalVelocity + m_fMaxGlideSpeed;
                                         if (fDiff < -10)
                                         {
-                                            _rigidbody.AddForce(transform.up * m_fResistance_Glide * Time.deltaTime * 10, ForceMode.VelocityChange);
+                                            Rigidbody.AddForce(transform.up * m_fResistance_Glide * Time.deltaTime * 10, ForceMode.VelocityChange);
                                         }
                                         else
                                         {
-                                            _rigidbody.AddForce(transform.up * m_fResistance_Glide * Time.deltaTime, ForceMode.VelocityChange);
+                                            Rigidbody.AddForce(transform.up * m_fResistance_Glide * Time.deltaTime, ForceMode.VelocityChange);
                                         }
                                     }
                                     else if (verticalVelocity > -m_fMinGlideSpeed)
                                     {
-                                        _rigidbody.AddForce(transform.up * (-m_fForceGravity_Glide) * Time.deltaTime, ForceMode.VelocityChange);
+                                        Rigidbody.AddForce(transform.up * (-m_fForceGravity_Glide) * Time.deltaTime, ForceMode.VelocityChange);
                                     }
                                 }
                                 else
                                 {
                                     if (verticalVelocity > -m_fMinBailOutSpeed)
                                     {
-                                        _rigidbody.AddForce(transform.up * (-m_fForceGravity) * Time.deltaTime, ForceMode.VelocityChange);
+                                        Rigidbody.AddForce(transform.up * (-m_fForceGravity) * Time.deltaTime, ForceMode.VelocityChange);
 
                                     }
                                     else if (verticalVelocity < -m_fMaxBailOutSpeed)
                                     {
-                                        _rigidbody.AddForce(transform.up * m_fResistance * Time.deltaTime, ForceMode.VelocityChange);
+                                        Rigidbody.AddForce(transform.up * m_fResistance * Time.deltaTime, ForceMode.VelocityChange);
                                     }
                                 }
                             }
                         }
                         else if (!onStep && !isJumping)
                         {
-                            if (_rigidbody.velocity.y > .0f)
-                                _rigidbody.AddForce(transform.up * jumpExtraGravity * Time.deltaTime, ForceMode.VelocityChange);
+                            if (Rigidbody.velocity.y > .0f)
+                                Rigidbody.AddForce(transform.up * jumpExtraGravity * Time.deltaTime, ForceMode.VelocityChange);
                             else
-                                _rigidbody.AddForce(transform.up * extraGravity * Time.deltaTime, ForceMode.VelocityChange);
+                                Rigidbody.AddForce(transform.up * extraGravity * Time.deltaTime, ForceMode.VelocityChange);
                         }
                     }
                     else if (!onStep && !isJumping)
                     {
-                        _rigidbody.AddForce(transform.up * (extraGravity * 2 * Time.deltaTime), ForceMode.VelocityChange);
+                        Rigidbody.AddForce(transform.up * (extraGravity * 2 * Time.deltaTime), ForceMode.VelocityChange);
                     }
                 }
             }
@@ -259,8 +259,8 @@ namespace Assets.Scripts.Player
         {
             if (!isGrounded)
             {
-                _rigidbody.mass = Mass_Max;
-                _rigidbody.velocity = Vector3.zero;
+                Rigidbody.mass = Mass_Max;
+                Rigidbody.velocity = Vector3.zero;
             }
             isGrounded = true;
             if (groundHit.transform != null)
@@ -273,7 +273,7 @@ namespace Assets.Scripts.Player
         {
             if (isGrounded)
             {
-                _rigidbody.mass = Mass_Normal;
+                Rigidbody.mass = Mass_Normal;
             }
             isGrounded = false;
         }
@@ -298,7 +298,7 @@ namespace Assets.Scripts.Player
                 isGrounded = false;
                 var slideVelocity = (GroundAngle() - slopeLimit) * 2f;
                 slideVelocity = Mathf.Clamp(slideVelocity, 0, 10);
-                _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, -slideVelocity, _rigidbody.velocity.z);
+                Rigidbody.velocity = new Vector3(Rigidbody.velocity.x, -slideVelocity, Rigidbody.velocity.z);
             }
             else
             {

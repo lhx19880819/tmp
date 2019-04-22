@@ -34,7 +34,7 @@ namespace Assets.Scripts.Player
             mAnimator.SetFloat("InputMagnitude", 0);
             direction = 0;
             speed = 0;
-            _rigidbody.velocity = Vector3.zero;
+            Rigidbody.velocity = Vector3.zero;
         }
 
         public void OnDisableAttack()

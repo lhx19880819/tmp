@@ -4,7 +4,7 @@ namespace Assets.Scripts.Player
 {
     public partial class AInput
     {
-        private Animator mAnimator;
+        public Animator mAnimator;
 
         private void InitAnimator()
         {
