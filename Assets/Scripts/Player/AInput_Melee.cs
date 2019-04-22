@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Invector.vCharacterController;
+using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
 namespace Assets.Scripts.Player
@@ -15,6 +16,10 @@ namespace Assets.Scripts.Player
             {
                 bool bAttack = CrossPlatformInputManager.GetButtonDown("Attack");
                 Attack(bAttack);
+//                if (CrossPlatformInputManager.GetButtonDown("Strafe"))
+//                {
+//                    SwitchStrafe();
+//                }
             }
         }
 

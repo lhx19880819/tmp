@@ -40,6 +40,11 @@ namespace Assets.Scripts.Player
 #endif
         }
 
+        void OnDisable()
+        {
+            _isStrafing = false;
+        }
+
         private void Update()
         {
 #if UNITY_EDITOR
