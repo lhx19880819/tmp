@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Invector.vCharacterController;
+using UnityEngine;
 
 namespace Assets.Scripts.Player
 {
@@ -61,6 +62,8 @@ namespace Assets.Scripts.Player
         }
         public CapsuleCollider _capsuleCollider;
         float groundDistance;
+
+        public GenericInput JumpInput = new GenericInput("Space", "X", "X");
 
         private void InitJump()
         {

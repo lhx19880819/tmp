@@ -86,7 +86,7 @@ namespace Assets.Scripts.Player
                 return;
             }
             //
-            if (Input.GetKeyDown("space"))
+            if (JumpInput.GetButtonDown())
             {
                 Jump();
             }
