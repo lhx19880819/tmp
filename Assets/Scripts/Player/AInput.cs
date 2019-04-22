@@ -7,11 +7,13 @@ namespace Assets.Scripts.Player
 {
     public partial class AInput : MonoBehaviour
     {
+        public float currentHealth = 10;
+
         private bool lockMovement;
         private bool lockInStrafe;
 
         private bool _isStrafing = false;
-        private bool isStrafing
+        public bool isStrafing
         {
             get
             {
@@ -27,6 +29,7 @@ namespace Assets.Scripts.Player
 
         void Start()
         {
+            InitCharacter();
             InitAnimator();
             InitJump();
             InitCamera();
@@ -60,7 +63,7 @@ namespace Assets.Scripts.Player
         }
 
 #if UNITY_EDITOR
-        private void PCInput()
+        public void PCInput()
         {
             //
             if (Input.GetKeyDown(KeyCode.Tab))

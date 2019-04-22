@@ -94,7 +94,7 @@ namespace Assets.Scripts.Player
             }
         }
 
-        private void CameraInput()
+        public void CameraInput()
         {
             if (isAttack)
             {

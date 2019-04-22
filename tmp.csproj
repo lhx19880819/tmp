@@ -246,12 +246,15 @@
     <Compile Include="Assets\Invector-3rdPersonController\Add-ons\FreeClimb (Beta)\Scripts\vCapsuleHelper.cs" />
     <Compile Include="Assets\Invector-3rdPersonController\Add-ons\FreeClimb (Beta)\Scripts\vDebugHelper.cs" />
     <Compile Include="Assets\Invector-3rdPersonController\Add-ons\FreeClimb (Beta)\Scripts\vFreeClimb.cs" />
+    <Compile Include="Assets\Invector-3rdPersonController\Add-ons\Swimming\Scripts\vSwimming.cs" />
+    <Compile Include="Assets\Invector-3rdPersonController\Add-ons\Swimming\Scripts\vUnderWaterTrigger.cs" />
     <Compile Include="Assets\Scripts\Other\ADestroyGameObject.cs" />
     <Compile Include="Assets\Scripts\Other\vFisherYatesRandom.cs" />
     <Compile Include="Assets\Scripts\Player\AInput.cs" />
     <Compile Include="Assets\Scripts\Player\AInput_AirMove.cs" />
     <Compile Include="Assets\Scripts\Player\AInput_Animator.cs" />
     <Compile Include="Assets\Scripts\Player\AInput_Camera.cs" />
+    <Compile Include="Assets\Scripts\Player\AInput_Character.cs" />
     <Compile Include="Assets\Scripts\Player\AInput_Jump.cs" />
     <Compile Include="Assets\Scripts\Player\AInput_Melee.cs" />
     <Compile Include="Assets\Scripts\Player\AInput_Motor.cs" />
@@ -259,6 +262,11 @@
     <Compile Include="Assets\Scripts\Player\TouchPad.cs" />
     <Compile Include="Assets\Scripts\Player\vMeleeAttackControl.cs" />
     <Compile Include="Assets\Scripts\Player\vTriggerSoundByState.cs" />
+    <Compile Include="Assets\Scripts\vActionListener.cs" />
+    <Compile Include="Assets\Scripts\vAnimateUV.cs" />
+    <Compile Include="Assets\Scripts\vGetTransform.cs" />
+    <Compile Include="Assets\Scripts\vMonoBehaviour.cs" />
+    <Compile Include="Assets\Scripts\vTriggerGenericAction.cs" />
     <Compile Include="Assets\ThirdParty\Level\FPSCounter.cs" />
   </ItemGroup>
   <ItemGroup>

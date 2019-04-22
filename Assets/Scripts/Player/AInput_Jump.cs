@@ -54,7 +54,11 @@ namespace Assets.Scripts.Player
         public Vector3 colliderCenter;
 
         RaycastHit groundHit;
-        public Rigidbody Rigidbody;                                // access the Rigidbody component
+        Rigidbody _rigidbody;                                // access the Rigidbody component
+        public Rigidbody Rigidbody
+        {
+            get { return _rigidbody; }
+        }
         public CapsuleCollider _capsuleCollider;
         float groundDistance;
 
@@ -84,7 +88,7 @@ namespace Assets.Scripts.Player
             colliderCenter = _capsuleCollider.center;
             colliderRadius = _capsuleCollider.radius;
             colliderHeight = _capsuleCollider.height;
-            Rigidbody = GetComponent<Rigidbody>();
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         public void Jump()

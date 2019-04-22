@@ -122,7 +122,7 @@ namespace Assets.Scripts.Player
             }
         }
 
-        private void FreeMovement()
+        public void FreeMovement()
         {
             // set speed to both vertical and horizontal inputs
             speed = Mathf.Abs(input.x) + Mathf.Abs(input.y);
@@ -394,6 +394,16 @@ namespace Assets.Scripts.Player
             _targetVelocity.y = Rigidbody.velocity.y;
             Rigidbody.velocity = _targetVelocity;
             Rigidbody.AddForce(transform.forward * (velocity * speed) * Time.deltaTime, ForceMode.VelocityChange);
+        }
+
+        public void EnableGravityAndCollision(float normalizedTime)
+        {
+            // enable collider and gravity at the end of the animation
+            if (baseLayerInfo.normalizedTime >= normalizedTime)
+            {
+                _capsuleCollider.isTrigger = false;
+                Rigidbody.useGravity = true;
+            }
         }
     }//class end
 }
