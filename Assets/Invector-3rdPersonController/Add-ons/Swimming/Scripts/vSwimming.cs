@@ -99,7 +99,8 @@ namespace Invector.vCharacterController.vActions
 
         public UnityEvent OnAboveWater;
         public UnityEvent OnUnderWater;
-//        public GenericInput JumpInput = new GenericInput("Space", "X", "X");
+        //        public GenericInput JumpInput = new GenericInput("Space", "X", "X");
+        public GenericInput actionInput = new GenericInput("E", "A", "A");
 
         private void Start()
         {
@@ -400,7 +401,7 @@ namespace Invector.vCharacterController.vActions
         {
             if (exitWaterTrigger == null) return;
 
-            if (Input.GetKeyDown(KeyCode.E))
+            if (actionInput.GetButtonDown())
             {
                 tpInput.Rigidbody.drag = 0f;
                 OnAboveWater.Invoke();
