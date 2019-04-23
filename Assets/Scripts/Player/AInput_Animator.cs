@@ -29,11 +29,11 @@ namespace Assets.Scripts.Player
         public void LayerControl()
         {
             baseLayerInfo = Animator.GetCurrentAnimatorStateInfo(baseLayer);
-//            underBodyInfo = Animator.GetCurrentAnimatorStateInfo(underBodyLayer);
-//            rightArmInfo = Animator.GetCurrentAnimatorStateInfo(rightArmLayer);
-//            leftArmInfo = Animator.GetCurrentAnimatorStateInfo(leftArmLayer);
-//            upperBodyInfo = Animator.GetCurrentAnimatorStateInfo(upperBodyLayer);
-//            fullBodyInfo = Animator.GetCurrentAnimatorStateInfo(fullbodyLayer);
+            underBodyInfo = Animator.GetCurrentAnimatorStateInfo(underBodyLayer);
+            rightArmInfo = Animator.GetCurrentAnimatorStateInfo(rightArmLayer);
+            leftArmInfo = Animator.GetCurrentAnimatorStateInfo(leftArmLayer);
+            upperBodyInfo = Animator.GetCurrentAnimatorStateInfo(upperBodyLayer);
+            fullBodyInfo = Animator.GetCurrentAnimatorStateInfo(fullbodyLayer);
         }
 
         public void ActionsControl()
@@ -76,6 +76,9 @@ namespace Assets.Scripts.Player
 
         private void UpdateAnimator()
         {
+            LayerControl();
+            ActionsControl();
+
             Animator.SetBool("IsStrafing", isStrafing);
             Animator.SetBool("IsCrouching", isCrouching);
             Animator.SetBool("IsGrounded", isGrounded);

@@ -106,6 +106,13 @@ namespace Invector.vCharacterController.vActions
             tpInput = GetComponent<AInput>();
         }
 
+        public void OnAnimatorMove()
+        {
+            if(tpInput.enabled) return;
+            transform.rotation = tpInput.Animator.rootRotation;
+            transform.position = tpInput.Animator.rootPosition;
+        }
+
         protected virtual void Update()
         {
             if (!inTheWater) return;

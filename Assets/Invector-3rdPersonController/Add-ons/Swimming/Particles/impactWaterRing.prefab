@@ -39,7 +39,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 127214}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd39039863a63e48ad1e9260ed01bc8, type: 3}
+  m_Script: {fileID: 11500000, guid: d24ffd568e1cef447832e64f315251aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   delay: 2
@@ -103,7 +103,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 2
-  randomSeed: 0
+  randomSeed: 1598714322
   InitialModule:
     serializedVersion: 3
     enabled: 1

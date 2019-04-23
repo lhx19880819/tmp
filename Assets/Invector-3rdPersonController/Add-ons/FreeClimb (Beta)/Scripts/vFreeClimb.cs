@@ -485,7 +485,6 @@ namespace Invector.CharacterController.Actions
             oldInput = Time.time;
 
             TP_Input.enabled = false;
-            TP_Input.enabled = false;
             TP_Input.Rigidbody.isKinematic = true;
             RaycastHit hit;
             var climbUpConditions = TP_Input.isGrounded && !Physics.Raycast(transform.position + Vector3.up * TP_Input._capsuleCollider.height, Vector3.up, TP_Input._capsuleCollider.height * 0.5f, obstacle) &&

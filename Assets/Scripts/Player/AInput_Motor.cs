@@ -100,8 +100,9 @@ namespace Assets.Scripts.Player
             input.x = h;
             input.y = v;
 
-            if (!isGrounded && !jumpAirControl || lockMovement || isAttack)
+            if ((!isGrounded && !jumpAirControl) || lockMovement || isAttack || actions)
             {
+//                input = Vector2.zero;
                 Animator.SetFloat("InputMagnitude", 0);
                 direction = 0;
                 speed = 0;
@@ -145,7 +146,7 @@ namespace Assets.Scripts.Player
                 var diferenceRotation = freeRotation.eulerAngles.y - transform.eulerAngles.y;
                 var eulerY = transform.eulerAngles.y;
                 // apply free directional rotation while not turning180 animations
-                if (isGrounded || (!isGrounded))
+//                if (isGrounded || (!isGrounded))
                 {
                     if (diferenceRotation < 0 || diferenceRotation > 0) eulerY = freeRotation.eulerAngles.y;
                     var euler = new Vector3(transform.eulerAngles.x, eulerY, transform.eulerAngles.z);
@@ -192,8 +193,6 @@ namespace Assets.Scripts.Player
                 return;
             }
             if (!this.enabled) return;
-
-            LayerControl();
 
             // we implement this function to override the default root motion.
             // this allows us to modify the positional speed before it's applied.

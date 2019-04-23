@@ -40,6 +40,13 @@ namespace Assets.Scripts.Player
 #endif
         }
 
+        void OnEnable()
+        {
+            customAction = false;
+            lockMovement = false;
+            forceRootMotion = false;
+        }
+
         void OnDisable()
         {
             _isStrafing = false;
