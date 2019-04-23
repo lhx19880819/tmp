@@ -178,8 +178,8 @@ namespace Invector.vCharacterController.vActions
                     triggerUnderWater = true;
                     triggerAboveWater = false;
                     OnUnderWater.Invoke();
-                    tpInput.mAnimator.CrossFadeInFixedTime(diveClip, 0.25f);
-                    tpInput.mAnimator.SetInteger("ActionState", 2);
+                    tpInput.Animator.CrossFadeInFixedTime(diveClip, 0.25f);
+                    tpInput.Animator.SetInteger("ActionState", 2);
                 }
             }
             else
@@ -190,8 +190,8 @@ namespace Invector.vCharacterController.vActions
                     triggerUnderWater = false;
                     triggerAboveWater = true;
                     OnAboveWater.Invoke();
-                    tpInput.mAnimator.CrossFadeInFixedTime(swimmingClip, 0.25f);
-                    tpInput.mAnimator.SetInteger("ActionState", 1);
+                    tpInput.Animator.CrossFadeInFixedTime(swimmingClip, 0.25f);
+                    tpInput.Animator.SetInteger("ActionState", 1);
                 }
             }
         }
@@ -264,7 +264,7 @@ namespace Invector.vCharacterController.vActions
             ResetPlayerValues();
             tpInput.isStrafing = false;
             tpInput.customAction = true;
-            tpInput.mAnimator.CrossFadeInFixedTime(swimmingClip, 0.25f);
+            tpInput.Animator.CrossFadeInFixedTime(swimmingClip, 0.25f);
             tpInput.freeSpeed.rotationSpeed = swimRotationSpeed;
             tpInput.Rigidbody.useGravity = false;
             tpInput.Rigidbody.drag = 10f;
@@ -278,7 +278,7 @@ namespace Invector.vCharacterController.vActions
             triggerSwimState = false;
             tpInput.enabled = true;
             tpInput.customAction = false;
-            tpInput.mAnimator.SetInteger("ActionState", 0);
+            tpInput.Animator.SetInteger("ActionState", 0);
             tpInput.colliderRadius = originalColliderRadius;
             tpInput.freeSpeed.rotationSpeed = originalRotationSpeed;
             tpInput.Rigidbody.useGravity = true;
@@ -299,7 +299,7 @@ namespace Invector.vCharacterController.vActions
                 tpInput.CameraInput();                              // update the camera input
                 tpInput.DisableGravityAndCollision();            // disable gravity and collision so the character can make the animation using root motion                
                 tpInput.isGrounded = true;                       // ground the character so that we can run the root motion without any issues
-                tpInput.mAnimator.SetBool("IsGrounded", true);    // also ground the character on the animator so that he won't float after finishes the climb animation
+                tpInput.Animator.SetBool("IsGrounded", true);    // also ground the character on the animator so that he won't float after finishes the climb animation
 
                 if (_tempExitWaterTrigger.matchTarget != null)
                 {
@@ -313,11 +313,11 @@ namespace Invector.vCharacterController.vActions
                 {
                     if (debugMode) Debug.Log("Rotate to Target...");
                     // smoothly rotate the character to the target
-                    transform.rotation = Quaternion.Lerp(transform.rotation, _tempExitWaterTrigger.transform.rotation, tpInput.mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, _tempExitWaterTrigger.transform.rotation, tpInput.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
                 }
 
                 // after playing the animation we reset some values
-                if (tpInput.mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1 >= .8f)
+                if (tpInput.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1 >= .8f)
                 {
                     tpInput.EnableGravityAndCollision(0f);       // enable again the gravity and collision 
                     exitWaterTrigger = null;                        // reset the exitWaterTrigger to null
@@ -338,7 +338,7 @@ namespace Invector.vCharacterController.vActions
             speed = Mathf.Abs(tpInput.input.x) + Mathf.Abs(tpInput.input.y);
             speed = Mathf.Clamp(speed, 0, 1f);
             // update input values to animator 
-            tpInput.mAnimator.SetFloat("InputVertical", speed, 0.5f, Time.deltaTime);
+            tpInput.Animator.SetFloat("InputVertical", speed, 0.5f, Time.deltaTime);
             // extra rigibody forward force 
             var velY = transform.forward * swimForwardSpeed * speed;
             velY.y = tpInput.Rigidbody.velocity.y;
@@ -365,14 +365,14 @@ namespace Invector.vCharacterController.vActions
                 vel.y = swimUpSpeed;
                 tpInput.Rigidbody.velocity = vel;
                 //tpInput.mAnimator.PlayInFixedTime("DiveUp", 0, tpInput.input.magnitude > 0.1f ? 0.5f : 0.1f);
-                tpInput.mAnimator.CrossFadeInFixedTime("DiveUp", tpInput.input.magnitude > 0.1f ? 0.5f : 0.1f);
+                tpInput.Animator.CrossFadeInFixedTime("DiveUp", tpInput.input.magnitude > 0.1f ? 0.5f : 0.1f);
             }
             else if (Input.GetKeyDown(KeyCode.F) && !upConditions)
             {
                 var vel = tpInput.Rigidbody.velocity;
                 vel.y = -swimUpSpeed;
                 tpInput.Rigidbody.velocity = vel;
-                tpInput.mAnimator.CrossFadeInFixedTime("DiveDown", tpInput.input.magnitude > 0.1f ? 0.5f : 0.1f);
+                tpInput.Animator.CrossFadeInFixedTime("DiveDown", tpInput.input.magnitude > 0.1f ? 0.5f : 0.1f);
             }
             else
             {
@@ -397,7 +397,7 @@ namespace Invector.vCharacterController.vActions
             {
                 tpInput.Rigidbody.drag = 0f;
                 OnAboveWater.Invoke();
-                tpInput.mAnimator.CrossFadeInFixedTime(exitWaterClip, 0.1f);
+                tpInput.Animator.CrossFadeInFixedTime(exitWaterClip, 0.1f);
             }
         }
 
@@ -421,11 +421,11 @@ namespace Invector.vCharacterController.vActions
         {
             tpInput.isJumping = false;
             tpInput.isSprinting = false;
-            tpInput.mAnimator.SetFloat("InputHorizontal", 0);
-            tpInput.mAnimator.SetFloat("InputVertical", 0);
-            tpInput.mAnimator.SetInteger("ActionState", 1);
+            tpInput.Animator.SetFloat("InputHorizontal", 0);
+            tpInput.Animator.SetFloat("InputVertical", 0);
+            tpInput.Animator.SetInteger("ActionState", 1);
             tpInput.isGrounded = true;                       // ground the character so that we can run the root motion without any issues
-            tpInput.mAnimator.SetBool("IsGrounded", true);    // also ground the character on the animator so that he won't float after finishes the climb animation
+            tpInput.Animator.SetBool("IsGrounded", true);    // also ground the character on the animator so that he won't float after finishes the climb animation
             tpInput.verticalVelocity = 0f;
         }
 

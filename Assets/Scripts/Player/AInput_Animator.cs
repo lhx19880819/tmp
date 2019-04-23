@@ -5,7 +5,7 @@ namespace Assets.Scripts.Player
     public partial class AInput
     {
         Animator animator;
-        public Animator mAnimator
+        public Animator Animator
         {
             get { return animator; }
         }
@@ -13,12 +13,12 @@ namespace Assets.Scripts.Player
         [HideInInspector]
         public AnimatorStateInfo baseLayerInfo, underBodyInfo, rightArmInfo, leftArmInfo, fullBodyInfo, upperBodyInfo;
 
-        int baseLayer { get { return mAnimator.GetLayerIndex("Base Layer"); } }
-        int underBodyLayer { get { return mAnimator.GetLayerIndex("UnderBody"); } }
-        int rightArmLayer { get { return mAnimator.GetLayerIndex("RightArm"); } }
-        int leftArmLayer { get { return mAnimator.GetLayerIndex("LeftArm"); } }
-        int upperBodyLayer { get { return mAnimator.GetLayerIndex("UpperBody"); } }
-        int fullbodyLayer { get { return mAnimator.GetLayerIndex("FullBody"); } }
+        int baseLayer { get { return Animator.GetLayerIndex("Base Layer"); } }
+        int underBodyLayer { get { return Animator.GetLayerIndex("UnderBody"); } }
+        int rightArmLayer { get { return Animator.GetLayerIndex("RightArm"); } }
+        int leftArmLayer { get { return Animator.GetLayerIndex("LeftArm"); } }
+        int upperBodyLayer { get { return Animator.GetLayerIndex("UpperBody"); } }
+        int fullbodyLayer { get { return Animator.GetLayerIndex("FullBody"); } }
 
 
         private void InitAnimator()
@@ -28,13 +28,14 @@ namespace Assets.Scripts.Player
 
         public void LayerControl()
         {
-            baseLayerInfo = mAnimator.GetCurrentAnimatorStateInfo(baseLayer);
-            underBodyInfo = mAnimator.GetCurrentAnimatorStateInfo(underBodyLayer);
-            rightArmInfo = mAnimator.GetCurrentAnimatorStateInfo(rightArmLayer);
-            leftArmInfo = mAnimator.GetCurrentAnimatorStateInfo(leftArmLayer);
-            upperBodyInfo = mAnimator.GetCurrentAnimatorStateInfo(upperBodyLayer);
-            fullBodyInfo = mAnimator.GetCurrentAnimatorStateInfo(fullbodyLayer);
+            baseLayerInfo = Animator.GetCurrentAnimatorStateInfo(baseLayer);
+//            underBodyInfo = Animator.GetCurrentAnimatorStateInfo(underBodyLayer);
+//            rightArmInfo = Animator.GetCurrentAnimatorStateInfo(rightArmLayer);
+//            leftArmInfo = Animator.GetCurrentAnimatorStateInfo(leftArmLayer);
+//            upperBodyInfo = Animator.GetCurrentAnimatorStateInfo(upperBodyLayer);
+//            fullBodyInfo = Animator.GetCurrentAnimatorStateInfo(fullbodyLayer);
         }
+
         public void ActionsControl()
         {
             // to have better control of your actions, you can filter the animations state using bools 
@@ -63,6 +64,7 @@ namespace Assets.Scripts.Player
             if (fullBodyInfo.IsTag(tag)) return true;
             return false;
         }
+
         public void DisableGravityAndCollision()
         {
             animator.SetFloat("InputHorizontal", 0f);
@@ -74,19 +76,19 @@ namespace Assets.Scripts.Player
 
         private void UpdateAnimator()
         {
-            mAnimator.SetBool("IsStrafing", isStrafing);
-            mAnimator.SetBool("IsCrouching", isCrouching);
-            mAnimator.SetBool("IsGrounded", isGrounded);
+            Animator.SetBool("IsStrafing", isStrafing);
+            Animator.SetBool("IsCrouching", isCrouching);
+            Animator.SetBool("IsGrounded", isGrounded);
 //            mAnimator.SetBool("isDead", isDead);
 
-            mAnimator.SetFloat("GroundDistance", groundDistance);
-            mAnimator.SetFloat("VerticalVelocity", verticalVelocity);
+            Animator.SetFloat("GroundDistance", groundDistance);
+            Animator.SetFloat("VerticalVelocity", verticalVelocity);
 
             if (isStrafing)
             {
-                mAnimator.SetFloat("InputHorizontal", direction, dampTIme, Time.deltaTime);
+                Animator.SetFloat("InputHorizontal", direction, dampTIme, Time.deltaTime);
             }
-            mAnimator.SetFloat("InputVertical", speed, dampTIme, Time.deltaTime);
+            Animator.SetFloat("InputVertical", speed, dampTIme, Time.deltaTime);
         }
 
         public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget target, MatchTargetWeightMask weightMask, float normalisedStartTime, float normalisedEndTime)

@@ -43,6 +43,9 @@ namespace Assets.Scripts.Player
         void OnDisable()
         {
             _isStrafing = false;
+            Animator.SetFloat("InputMagnitude", 0);
+            direction = 0;
+            speed = 0;
         }
 
         private void Update()
@@ -51,7 +54,7 @@ namespace Assets.Scripts.Player
             PCInput();
             if (Cursor.visible)
             {
-                mAnimator.SetFloat("InputMagnitude", 0);
+                Animator.SetFloat("InputMagnitude", 0);
                 direction = 0;
                 speed = 0;
                 return;
@@ -85,7 +88,7 @@ namespace Assets.Scripts.Player
             }
             if (Cursor.visible)
             {
-                mAnimator.SetFloat("InputMagnitude", 0);
+                Animator.SetFloat("InputMagnitude", 0);
                 direction = 0;
                 speed = 0;
                 return;
@@ -110,7 +113,7 @@ namespace Assets.Scripts.Player
 #if UNITY_EDITOR
             if (Cursor.visible)
             {
-                mAnimator.SetFloat("InputMagnitude", 0);
+                Animator.SetFloat("InputMagnitude", 0);
                 direction = 0;
                 speed = 0;
                 return;
@@ -122,6 +125,9 @@ namespace Assets.Scripts.Player
 
         public void SetLockMove(bool b, float f = 0)
         {
+            Animator.SetFloat("InputMagnitude", 0);
+            direction = 0;
+            speed = 0;
             if (f == 0)
             {
                 lockMovement = b;

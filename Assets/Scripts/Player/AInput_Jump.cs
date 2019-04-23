@@ -103,9 +103,9 @@ namespace Assets.Scripts.Player
             jumpCounter = jumpTimer;
             isJumping = true;
             if (input.sqrMagnitude < 0.1f)
-                mAnimator.CrossFadeInFixedTime("Jump", 0.1f);
+                Animator.CrossFadeInFixedTime("Jump", 0.1f);
             else
-                mAnimator.CrossFadeInFixedTime("JumpMove", .2f);
+                Animator.CrossFadeInFixedTime("JumpMove", .2f);
         }
 
         private void ControlJumpBehaviour()

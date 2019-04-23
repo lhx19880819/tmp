@@ -29,7 +29,7 @@ namespace Assets.Scripts.Player
         {
             if (customAction || isAttack) return;
             isStrafing = !isStrafing;
-            mAnimator.SetBool("IsStrafing", isStrafing);
+            Animator.SetBool("IsStrafing", isStrafing);
         }
 
         public void OnEnableAttack()
@@ -38,7 +38,7 @@ namespace Assets.Scripts.Player
             isAttack = true;
 
 
-            mAnimator.SetFloat("InputMagnitude", 0);
+            Animator.SetFloat("InputMagnitude", 0);
             direction = 0;
             speed = 0;
             Rigidbody.velocity = Vector3.zero;
@@ -55,7 +55,7 @@ namespace Assets.Scripts.Player
 
         public void ResetAttackTriggers()
         {
-            mAnimator.ResetTrigger("Attack");
+            Animator.ResetTrigger("Attack");
         }
 
         private void Attack(bool bAttack = true)
@@ -66,14 +66,14 @@ namespace Assets.Scripts.Player
             }
             if (isStrafing && bAttack)
             {
-                mAnimator.SetInteger("AttackID", attackId);
-                mAnimator.SetTrigger("Attack");
+                Animator.SetInteger("AttackID", attackId);
+                Animator.SetTrigger("Attack");
             }
             else if (bAttack)
             {
                 SwitchStrafe();
-                mAnimator.SetInteger("AttackID", attackId);
-                mAnimator.SetTrigger("Attack");
+                Animator.SetInteger("AttackID", attackId);
+                Animator.SetTrigger("Attack");
             }
         }
     }//class end

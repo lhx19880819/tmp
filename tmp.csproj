@@ -250,6 +250,9 @@
     <Compile Include="Assets\Invector-3rdPersonController\Add-ons\Swimming\Scripts\vUnderWaterTrigger.cs" />
     <Compile Include="Assets\Scripts\Other\ADestroyGameObject.cs" />
     <Compile Include="Assets\Scripts\Other\vFisherYatesRandom.cs" />
+    <Compile Include="Assets\Scripts\Player\Action\vEventWithDelay.cs" />
+    <Compile Include="Assets\Scripts\Player\Action\vGenericAction.cs" />
+    <Compile Include="Assets\Scripts\Player\Action\vTriggerGenericAction.cs" />
     <Compile Include="Assets\Scripts\Player\AInput.cs" />
     <Compile Include="Assets\Scripts\Player\AInput_AirMove.cs" />
     <Compile Include="Assets\Scripts\Player\AInput_Animator.cs" />
@@ -267,7 +270,6 @@
     <Compile Include="Assets\Scripts\vGetTransform.cs" />
     <Compile Include="Assets\Scripts\vInput.cs" />
     <Compile Include="Assets\Scripts\vMonoBehaviour.cs" />
-    <Compile Include="Assets\Scripts\vTriggerGenericAction.cs" />
     <Compile Include="Assets\ThirdParty\Level\FPSCounter.cs" />
   </ItemGroup>
   <ItemGroup>

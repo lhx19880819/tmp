@@ -102,7 +102,7 @@ namespace Assets.Scripts.Player
 
             if (!isGrounded && !jumpAirControl || lockMovement || isAttack)
             {
-                mAnimator.SetFloat("InputMagnitude", 0);
+                Animator.SetFloat("InputMagnitude", 0);
                 direction = 0;
                 speed = 0;
                 return;
@@ -135,7 +135,7 @@ namespace Assets.Scripts.Player
             if (isSprinting) speed += 0.5f;
             //if (stopMove || lockSpeed) speed = 0f;
 
-            mAnimator.SetFloat("InputMagnitude", speed, dampTIme, Time.deltaTime);
+            Animator.SetFloat("InputMagnitude", speed, dampTIme, Time.deltaTime);
 
             var conditions = (!actions || quickStop || isRolling);
             if (input != Vector2.zero && targetDirection.magnitude > 0.1f && conditions)
@@ -164,7 +164,7 @@ namespace Assets.Scripts.Player
             StrafeLimitSpeed(.8f);
 
             if (stopMove) strafeMagnitude = 0f;
-            mAnimator.SetFloat("InputMagnitude", strafeMagnitude, dampTIme, Time.deltaTime);
+            Animator.SetFloat("InputMagnitude", strafeMagnitude, dampTIme, Time.deltaTime);
         }
 
         protected virtual void StrafeLimitSpeed(float value)
@@ -183,8 +183,8 @@ namespace Assets.Scripts.Player
         {
             if (isAttack)
             {
-                transform.rotation = mAnimator.rootRotation;
-                transform.position = mAnimator.rootPosition;
+                transform.rotation = Animator.rootRotation;
+                transform.position = Animator.rootPosition;
                 return;
             }
             if (!isGrounded && !jumpAirControl || lockMovement)
@@ -193,11 +193,13 @@ namespace Assets.Scripts.Player
             }
             if (!this.enabled) return;
 
+            LayerControl();
+
             // we implement this function to override the default root motion.
             // this allows us to modify the positional speed before it's applied.
             if (isGrounded)
             {
-                transform.rotation = mAnimator.rootRotation;
+                transform.rotation = Animator.rootRotation;
 
                 //strafe extra speed
                 if (isStrafing)
@@ -280,7 +282,7 @@ namespace Assets.Scripts.Player
             if (useRootMotion && !actions && !customAction)
             {
                 this.velocity = velocity;
-                var deltaPosition = new Vector3(mAnimator.deltaPosition.x, transform.position.y, mAnimator.deltaPosition.z);
+                var deltaPosition = new Vector3(Animator.deltaPosition.x, transform.position.y, Animator.deltaPosition.z);
                 Vector3 v = (deltaPosition * (velocity > 0 ? velocity : 1f)) / Time.deltaTime;
                 v.y = Rigidbody.velocity.y;
                 Rigidbody.velocity = Vector3.Lerp(Rigidbody.velocity, v, 20f * Time.deltaTime);
@@ -292,9 +294,9 @@ namespace Assets.Scripts.Player
                 Vector3 v = Vector3.zero;
                 v.y = Rigidbody.velocity.y;
                 Rigidbody.velocity = v;
-                transform.position = mAnimator.rootPosition;
+                transform.position = Animator.rootPosition;
                 if (forceRootMotion)
-                    transform.rotation = mAnimator.rootRotation;
+                    transform.rotation = Animator.rootRotation;
             }
             else if (IsAirMoving())
             {

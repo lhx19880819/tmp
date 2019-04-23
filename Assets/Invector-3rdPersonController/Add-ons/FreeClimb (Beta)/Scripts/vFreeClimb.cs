@@ -119,8 +119,8 @@ namespace Invector.CharacterController.Actions
             else
             {
                 input = Vector2.zero;
-                TP_Input.mAnimator.SetFloat("InputHorizontal", 0);
-                TP_Input.mAnimator.SetFloat("InputVertical", 0);
+                TP_Input.Animator.SetFloat("InputHorizontal", 0);
+                TP_Input.Animator.SetFloat("InputVertical", 0);
             }
         }
 
@@ -204,13 +204,13 @@ namespace Invector.CharacterController.Actions
 
             if (canMoveClimb)
             {
-                TP_Input.mAnimator.SetFloat("InputHorizontal", horizontal, 0.2f, Time.deltaTime);
-                TP_Input.mAnimator.SetFloat("InputVertical", vertical, 0.2f, Time.deltaTime);
+                TP_Input.Animator.SetFloat("InputHorizontal", horizontal, 0.2f, Time.deltaTime);
+                TP_Input.Animator.SetFloat("InputVertical", vertical, 0.2f, Time.deltaTime);
             }
             else if (!inAlingClimb && !inClimbJump)
             {
-                TP_Input.mAnimator.SetFloat("InputHorizontal", 0, 0.2f, Time.deltaTime);
-                TP_Input.mAnimator.SetFloat("InputVertical", 0, 0.2f, Time.deltaTime);
+                TP_Input.Animator.SetFloat("InputHorizontal", 0, 0.2f, Time.deltaTime);
+                TP_Input.Animator.SetFloat("InputVertical", 0, 0.2f, Time.deltaTime);
             }
 
             if (input.y < 0 && Physics.Raycast(transform.position + Vector3.up * (TP_Input._capsuleCollider.height * 0.5f), Vector3.down, TP_Input._capsuleCollider.height, TP_Input.groundLayer))
@@ -279,8 +279,8 @@ namespace Invector.CharacterController.Actions
 
         protected virtual void ClimbJumpHandle()
         {
-            if (TP_Input.enabled || !TP_Input.mAnimator || !dragInfo.inDrag || inClimbUp) return;
-            if (CrossPlatformInputManager.GetButton("Jump") && !inClimbJump && input.magnitude > 0 && !TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".ClimbJump"))
+            if (TP_Input.enabled || !TP_Input.Animator || !dragInfo.inDrag || inClimbUp) return;
+            if (CrossPlatformInputManager.GetButton("Jump") && !inClimbJump && input.magnitude > 0 && !TP_Input.Animator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".ClimbJump"))
             {
                 var angleBetweenCharacterAndCamera = Vector3.Angle(transform.right, Camera.main.transform.right);
                 var rightDirection = angleBetweenCharacterAndCamera > 60 ? Camera.main.transform.right : transform.right;
@@ -351,15 +351,15 @@ namespace Invector.CharacterController.Actions
 
         protected virtual void ClimbUpHandle()
         {
-            if (inClimbJump || TP_Input.enabled || !TP_Input.mAnimator || !dragInfo.inDrag) return;
+            if (inClimbJump || TP_Input.enabled || !TP_Input.Animator || !dragInfo.inDrag) return;
 
             if (inClimbUp && !inAlingClimb)
             {
-                if (TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".ClimbUpWall"))
+                if (TP_Input.Animator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".ClimbUpWall"))
                 {
-                    if (!TP_Input.mAnimator.IsInTransition(0))
-                        TP_Input.mAnimator.MatchTarget(upPoint + Vector3.up * 0.1f, Quaternion.Euler(0, transform.eulerAngles.y, 0), AvatarTarget.RightHand, new MatchTargetWeightMask(new Vector3(0, 1, 1), 1), 0.1f, 0.4f);
-                    if (TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > .9f) ExitClimb();
+                    if (!TP_Input.Animator.IsInTransition(0))
+                        TP_Input.Animator.MatchTarget(upPoint + Vector3.up * 0.1f, Quaternion.Euler(0, transform.eulerAngles.y, 0), AvatarTarget.RightHand, new MatchTargetWeightMask(new Vector3(0, 1, 1), 1), 0.1f, 0.4f);
+                    if (TP_Input.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > .9f) ExitClimb();
                 }
                 return;
             }
@@ -400,7 +400,7 @@ namespace Invector.CharacterController.Actions
                                     if (hit.distance < TP_Input._capsuleCollider.height)
                                     {
                                         TP_Input.isCrouching = true;
-                                        TP_Input.mAnimator.SetBool("IsCrouching", true);
+                                        TP_Input.Animator.SetBool("IsCrouching", true);
                                     }
                                     ClimbUp();
                                 }
@@ -431,10 +431,10 @@ namespace Invector.CharacterController.Actions
             var targetRotation = Quaternion.LookRotation(-dragInfo.normal);
             var targetPosition = ((dragInfo.position + dir * -TP_Input._capsuleCollider.radius + Vector3.up * 0.1f) - transform.rotation * handTarget.localPosition);
 
-            TP_Input.mAnimator.SetFloat("InputVertical", 1f);
+            TP_Input.Animator.SetFloat("InputVertical", 1f);
             while (transition < 1 && Vector3.Distance(targetRotation.eulerAngles, transform.rotation.eulerAngles) > 0.2f && angle < 60)
             {
-                TP_Input.mAnimator.SetFloat("InputVertical", 1f);
+                TP_Input.Animator.SetFloat("InputVertical", 1f);
                 transition += Time.deltaTime * 0.5f;
                 targetPosition = ((dragInfo.position + dir * -TP_Input._capsuleCollider.radius) - transform.rotation * handTarget.localPosition);
                 // + transform.right * root.x + transform.up * root.y;
@@ -442,7 +442,7 @@ namespace Invector.CharacterController.Actions
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, transition);
                 yield return null;
             }
-            TP_Input.mAnimator.CrossFadeInFixedTime("ClimbUpWall", 0.1f);
+            TP_Input.Animator.CrossFadeInFixedTime("ClimbUpWall", 0.1f);
             inAlingClimb = false;
 
         }
@@ -469,9 +469,9 @@ namespace Invector.CharacterController.Actions
         protected virtual void ClimbJump()
         {
             inClimbJump = true;
-            TP_Input.mAnimator.SetFloat("InputHorizontal", input.x);
-            TP_Input.mAnimator.SetFloat("InputVertical", input.y);
-            TP_Input.mAnimator.CrossFadeInFixedTime("ClimbJump", 0.2f);
+            TP_Input.Animator.SetFloat("InputHorizontal", input.x);
+            TP_Input.Animator.SetFloat("InputVertical", input.y);
+            TP_Input.Animator.CrossFadeInFixedTime("ClimbJump", 0.2f);
         }
 
         protected virtual void ClimbUp()
@@ -490,8 +490,8 @@ namespace Invector.CharacterController.Actions
             RaycastHit hit;
             var climbUpConditions = TP_Input.isGrounded && !Physics.Raycast(transform.position + Vector3.up * TP_Input._capsuleCollider.height, Vector3.up, TP_Input._capsuleCollider.height * 0.5f, obstacle) &&
                 Physics.Raycast(transform.position + Vector3.up * (TP_Input._capsuleCollider.height * climbUpHeight), transform.forward, out hit, 1f, draggableWall) && draggableTags.Contains(hit.collider.gameObject.tag);
-            TP_Input.mAnimator.SetBool("IsGrounded", true);
-            TP_Input.mAnimator.CrossFadeInFixedTime(climbUpConditions ? "EnterClimbGrounded" : "EnterClimbAir", 0.2f);
+            TP_Input.Animator.SetBool("IsGrounded", true);
+            TP_Input.Animator.CrossFadeInFixedTime(climbUpConditions ? "EnterClimbGrounded" : "EnterClimbAir", 0.2f);
             //if (!climbEnterGrounded)
             //    transform.rotation = Quaternion.LookRotation(-dragInfo.normal);
             transform.position = (dragInfo.position - transform.rotation * handTarget.localPosition);
@@ -521,12 +521,12 @@ namespace Invector.CharacterController.Actions
                     transform.position = postion;
                 }
 
-                TP_Input.mAnimator.CrossFadeInFixedTime(nextGround ? "ExitGrounded" : "ExitAir", 0.2f);
+                TP_Input.Animator.CrossFadeInFixedTime(nextGround ? "ExitGrounded" : "ExitAir", 0.2f);
             }
             else
             {
                 TP_Input.verticalVelocity = 0;
-                TP_Input.mAnimator.SetFloat("GroundDistance", 0);
+                TP_Input.Animator.SetFloat("GroundDistance", 0);
             }
 
             transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
@@ -544,8 +544,8 @@ namespace Invector.CharacterController.Actions
         {
             if (TP_Input.enabled) return;
 
-            climbEnterGrounded = (TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".EnterClimbGrounded"));
-            climbEnterAir = (TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".EnterClimbAir"));
+            climbEnterGrounded = (TP_Input.Animator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".EnterClimbGrounded"));
+            climbEnterAir = (TP_Input.Animator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".EnterClimbAir"));
 
             if (dragInfo.inDrag && (canMoveClimb) && !inClimbUp && !inClimbJump && !climbEnterGrounded)
             {
@@ -570,15 +570,15 @@ namespace Invector.CharacterController.Actions
             ikWeight = Mathf.Lerp(ikWeight, 1f, 2f * Time.deltaTime);
             if (ikWeight > 0)
             {
-                var lRoot = transform.InverseTransformPoint(TP_Input.mAnimator.GetBoneTransform(HumanBodyBones.LeftHand).position);
-                var rRoot = transform.InverseTransformPoint(TP_Input.mAnimator.GetBoneTransform(HumanBodyBones.RightHand).position);
+                var lRoot = transform.InverseTransformPoint(TP_Input.Animator.GetBoneTransform(HumanBodyBones.LeftHand).position);
+                var rRoot = transform.InverseTransformPoint(TP_Input.Animator.GetBoneTransform(HumanBodyBones.RightHand).position);
                 RaycastHit hit2;
 
 
-                if (Physics.Raycast(TP_Input.mAnimator.GetBoneTransform(HumanBodyBones.LeftHand).position + transform.forward * -0.5f + transform.up * -0.2f, transform.forward, out hit2, 1f, draggableWall))
+                if (Physics.Raycast(TP_Input.Animator.GetBoneTransform(HumanBodyBones.LeftHand).position + transform.forward * -0.5f + transform.up * -0.2f, transform.forward, out hit2, 1f, draggableWall))
                 {
                     targetPositionL = transform.InverseTransformPoint(hit2.point);
-                    if (debugRays && debugHandIK) Debug.DrawLine(TP_Input.mAnimator.GetBoneTransform(HumanBodyBones.LeftHand).position + transform.forward * -0.5f + transform.up * -0.2f, hit2.point, Color.green);
+                    if (debugRays && debugHandIK) Debug.DrawLine(TP_Input.Animator.GetBoneTransform(HumanBodyBones.LeftHand).position + transform.forward * -0.5f + transform.up * -0.2f, hit2.point, Color.green);
                 }
                 else
                 {
@@ -590,13 +590,13 @@ namespace Invector.CharacterController.Actions
                     }
                     target.x = 0;
                     targetPositionL = Vector3.Lerp(targetPositionL, target, 5f * Time.deltaTime);
-                    if (debugRays && debugHandIK) Debug.DrawRay(TP_Input.mAnimator.GetBoneTransform(HumanBodyBones.LeftHand).position + transform.forward * -0.5f + transform.up * -0.2f, transform.forward, Color.red);
+                    if (debugRays && debugHandIK) Debug.DrawRay(TP_Input.Animator.GetBoneTransform(HumanBodyBones.LeftHand).position + transform.forward * -0.5f + transform.up * -0.2f, transform.forward, Color.red);
                 }
 
-                if (Physics.Raycast(TP_Input.mAnimator.GetBoneTransform(HumanBodyBones.RightHand).position + transform.forward * -0.5f + transform.up * -0.2f, transform.forward, out hit2, 1f, draggableWall))
+                if (Physics.Raycast(TP_Input.Animator.GetBoneTransform(HumanBodyBones.RightHand).position + transform.forward * -0.5f + transform.up * -0.2f, transform.forward, out hit2, 1f, draggableWall))
                 {
                     targetPositionR = transform.InverseTransformPoint(hit2.point);
-                    if (debugRays && debugHandIK) Debug.DrawLine(TP_Input.mAnimator.GetBoneTransform(HumanBodyBones.RightHand).position + transform.forward * -0.5f + transform.up * -0.2f, hit2.point, Color.green);
+                    if (debugRays && debugHandIK) Debug.DrawLine(TP_Input.Animator.GetBoneTransform(HumanBodyBones.RightHand).position + transform.forward * -0.5f + transform.up * -0.2f, hit2.point, Color.green);
                 }
                 else
                 {
@@ -607,7 +607,7 @@ namespace Invector.CharacterController.Actions
 
                     target.x = 0;
                     targetPositionR = Vector3.Lerp(targetPositionR, target, 5f * Time.deltaTime);
-                    if (debugRays && debugHandIK) Debug.DrawRay(TP_Input.mAnimator.GetBoneTransform(HumanBodyBones.RightHand).position + transform.forward * -0.5f + transform.up * -0.2f, transform.forward, Color.red);
+                    if (debugRays && debugHandIK) Debug.DrawRay(TP_Input.Animator.GetBoneTransform(HumanBodyBones.RightHand).position + transform.forward * -0.5f + transform.up * -0.2f, transform.forward, Color.red);
                 }
                 var leftHandPosition = transform.position + transform.right * targetPositionL.x + transform.up * lRoot.y + transform.forward * targetPositionL.z;
                 var rightHandPosition = transform.position + transform.right * targetPositionR.x + transform.up * rRoot.y + transform.forward * targetPositionR.z;
@@ -616,16 +616,16 @@ namespace Invector.CharacterController.Actions
                 leftHandPosition += lHandPos;
                 rightHandPosition += rHandPos;
 
-                TP_Input.mAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, ikWeight);
-                TP_Input.mAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, ikWeight);
+                TP_Input.Animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, ikWeight);
+                TP_Input.Animator.SetIKPositionWeight(AvatarIKGoal.RightHand, ikWeight);
 
-                TP_Input.mAnimator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandPosition);
-                TP_Input.mAnimator.SetIKPosition(AvatarIKGoal.RightHand, rightHandPosition);
+                TP_Input.Animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandPosition);
+                TP_Input.Animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandPosition);
             }
             else
             {
-                TP_Input.mAnimator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
-                TP_Input.mAnimator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
+                TP_Input.Animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 0);
+                TP_Input.Animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 0);
             }
         }
 
@@ -635,7 +635,7 @@ namespace Invector.CharacterController.Actions
             CalculateMovementRotation();
             ///Apply Position
             posTransition = Mathf.Lerp(posTransition, 1f, 5 * Time.deltaTime);
-            var root = transform.InverseTransformPoint(TP_Input.mAnimator.rootPosition);
+            var root = transform.InverseTransformPoint(TP_Input.Animator.rootPosition);
             var position = (dragInfo.position - transform.rotation * handTarget.localPosition) + transform.right * root.x + transform.up * root.y;
             transform.position = Vector3.Lerp(transform.position, position, posTransition);
         }
@@ -721,22 +721,22 @@ namespace Invector.CharacterController.Actions
             var eulerX = Quaternion.LookRotation(resultDirection).eulerAngles.x;
             var baseRotation = Quaternion.LookRotation(direction);
             var resultRotation = Quaternion.Euler(eulerX, baseRotation.eulerAngles.y, baseRotation.eulerAngles.z);
-            transform.rotation = Quaternion.Lerp(transform.rotation, resultRotation, (TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1) * 0.2f);
+            transform.rotation = Quaternion.Lerp(transform.rotation, resultRotation, (TP_Input.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime % 1) * 0.2f);
         }
 
         void ApplyClimbJump()
         {
-            if (TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".ClimbJump"))
+            if (TP_Input.Animator.GetCurrentAnimatorStateInfo(0).IsName(animatorStateHierarchy + ".ClimbJump"))
             {
                 var pos = (jumpPoint - transform.rotation * handTarget.localPosition);
-                if (!TP_Input.mAnimator.IsInTransition(0) && TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.25f)
+                if (!TP_Input.Animator.IsInTransition(0) && TP_Input.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.25f)
                 {
-                    var percentage = (((TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime - 0.25f) / 0.8f) * 100f) * 0.01f;
+                    var percentage = (((TP_Input.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime - 0.25f) / 0.8f) * 100f) * 0.01f;
                     transform.position = Vector3.Lerp(transform.position, pos, percentage);
                     transform.rotation = Quaternion.Lerp(transform.rotation, jumpRotation, percentage);
                 }
 
-                if (TP_Input.mAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
+                if (TP_Input.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime > 0.8f)
                 {
                     inClimbJump = false;
                     transform.position = pos;
@@ -756,8 +756,8 @@ namespace Invector.CharacterController.Actions
 
         void ApplyRootMotion()
         {
-            transform.position = TP_Input.mAnimator.rootPosition;
-            transform.rotation = TP_Input.mAnimator.rootRotation;
+            transform.position = TP_Input.Animator.rootPosition;
+            transform.rotation = TP_Input.Animator.rootRotation;
             posTransition = 0;
         }
 
