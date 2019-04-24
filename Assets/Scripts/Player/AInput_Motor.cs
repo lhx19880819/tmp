@@ -406,5 +406,13 @@ namespace Assets.Scripts.Player
                 Rigidbody.useGravity = true;
             }
         }
+
+        public void ResetPlayerMotor()
+        {
+            Animator.SetFloat("InputMagnitude", 0);
+            direction = 0;
+            speed = 0;
+            Rigidbody.velocity = Vector3.zero;
+        }
     }//class end
 }

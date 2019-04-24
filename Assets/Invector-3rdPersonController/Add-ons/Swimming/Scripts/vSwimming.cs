@@ -102,6 +102,8 @@ namespace Invector.vCharacterController.vActions
         //        public GenericInput JumpInput = new GenericInput("Space", "X", "X");
         public GenericInput actionInput = new GenericInput("E", "A", "A");
 
+        private bool exitLock = false;
+
         private void Start()
         {
             tpInput = GetComponent<AInput>();
@@ -222,6 +224,7 @@ namespace Invector.vCharacterController.vActions
             if (other.gameObject.CompareTag(waterTag))
             {
                 if (debugMode) Debug.Log("Player enter the Water");
+                exitLock = false;
                 inTheWater = true;
                 waterHeightLevel = other.transform.position.y;
                 originalColliderRadius = tpInput._capsuleCollider.radius;
@@ -338,6 +341,11 @@ namespace Invector.vCharacterController.vActions
 
         private void SwimForwardInput()
         {
+            if (exitLock)
+            {
+                tpInput.ResetPlayerMotor();
+                return;
+            }
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             float v = CrossPlatformInputManager.GetAxis("Vertical");
             // get input access from player
@@ -403,6 +411,7 @@ namespace Invector.vCharacterController.vActions
 
             if (actionInput.GetButtonDown())
             {
+                exitLock = true;
                 tpInput.Rigidbody.drag = 0f;
                 OnAboveWater.Invoke();
                 tpInput.Animator.CrossFadeInFixedTime(exitWaterClip, 0.1f);
