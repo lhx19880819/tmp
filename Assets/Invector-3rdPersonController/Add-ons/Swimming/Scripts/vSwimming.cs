@@ -411,6 +411,9 @@ namespace Invector.vCharacterController.vActions
 
             if (actionInput.GetButtonDown())
             {
+                 tpInput.colliderRadius = originalColliderRadius;
+                tpInput.ControlCapsuleHeight();
+
                 exitLock = true;
                 tpInput.Rigidbody.drag = 0f;
                 OnAboveWater.Invoke();

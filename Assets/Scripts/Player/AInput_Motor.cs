@@ -108,7 +108,24 @@ namespace Assets.Scripts.Player
                 speed = 0;
                 return;
             }
+            ControlCapsuleHeight();
             ControlLocomotion();
+        }
+
+        public void ControlCapsuleHeight()
+        {
+            if (isCrouching || isRolling || landHigh)
+            {
+                _capsuleCollider.center = colliderCenter / 1.5f;
+                _capsuleCollider.height = colliderHeight / 1.5f;
+            }
+            else
+            {
+                // back to the original values
+                _capsuleCollider.center = colliderCenter;
+                _capsuleCollider.radius = colliderRadius;
+                _capsuleCollider.height = colliderHeight;
+            }
         }
 
         private void ControlLocomotion()

@@ -49,8 +49,9 @@ namespace Invector.CharacterController.Actions
             tpInput = GetComponent<AInput>();           
         }
 
-        void LateUpdate()
+        void Update()
         {
+            tpInput.LateUpdate();
             AutoEnterLadder();
             EnterLadderInput();
             UseLadder();
@@ -59,6 +60,7 @@ namespace Invector.CharacterController.Actions
 
         void OnAnimatorMove()
         {
+            if(tpInput.enabled) return;
             if (!isUsingLadder) return;
             // enable movement using root motion
             transform.rotation = tpInput.Animator.rootRotation;
@@ -81,7 +83,6 @@ namespace Invector.CharacterController.Actions
             isUsingLadder = true;
             tpInput.Animator.SetInteger("ActionState", 1);     // set actionState 1 to avoid falling transitions            
             tpInput.enabled = false;                              // disable vThirdPersonInput
-            tpInput.enabled = false;                           // disable vThirdPersonController, Animator & Motor 
             tpInput.DisableGravityAndCollision();              // disable gravity & turn collision trigger
             tpInput.Rigidbody.velocity = Vector3.zero;                       
             ladderAction.OnDoAction.Invoke();
@@ -203,7 +204,6 @@ namespace Invector.CharacterController.Actions
             tpInput._capsuleCollider.isTrigger = false;
             tpInput.Rigidbody.useGravity = true;
             tpInput.Animator.SetInteger("ActionState", 0);            
-            tpInput.enabled = true;
             tpInput.enabled = true;
             tpInput.gameObject.transform.eulerAngles = new Vector3(0f, tpInput.gameObject.transform.localEulerAngles.y, 0f);
         }
