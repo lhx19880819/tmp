@@ -13,7 +13,7 @@ namespace Invector.vCharacterController.vActions
     /// This way the add-on become modular and plug&play easy to modify without changing the core of the controller. 
     /// </summary>
 
-//    [vClassHeader("Swimming Action")]
+    //    [vClassHeader("Swimming Action")]
     public class vSwimming : vActionListener
     {
         #region Swimming Variables      
@@ -69,13 +69,13 @@ namespace Invector.vCharacterController.vActions
         [Tooltip("Debug Mode will show the current behaviour at the console window")]
         public bool debugMode;
 
-//        [Header("Inputs")]
-//        [Tooltip("Input to make the character go up")]
-//        public GenericInput swimUpInput = new GenericInput("Space", "X", "X");
-//        [Tooltip("Input to make the character go down")]
-//        public GenericInput swimDownInput = new GenericInput("LeftShift", "Y", "Y");
-//        [Tooltip("Input to exit the water by triggering a climb animation")]
-//        public GenericInput exitWaterInput = new GenericInput("E", "A", "A");
+        //        [Header("Inputs")]
+        //        [Tooltip("Input to make the character go up")]
+        //        public GenericInput swimUpInput = new GenericInput("Space", "X", "X");
+        //        [Tooltip("Input to make the character go down")]
+        //        public GenericInput swimDownInput = new GenericInput("LeftShift", "Y", "Y");
+        //        [Tooltip("Input to exit the water by triggering a climb animation")]
+        //        public GenericInput exitWaterInput = new GenericInput("E", "A", "A");
 
         private AInput tpInput;
         private vGetTransform exitWaterTrigger;
@@ -111,7 +111,7 @@ namespace Invector.vCharacterController.vActions
 
         public void OnAnimatorMove()
         {
-            if(tpInput.enabled) return;
+            if (tpInput.enabled) return;
             transform.rotation = tpInput.Animator.rootRotation;
             transform.position = tpInput.Animator.rootPosition;
         }
@@ -161,14 +161,14 @@ namespace Invector.vCharacterController.vActions
                     SwimUpOrDownInput();                            // input to swin up or down
                     ExitWaterInput();                               // input to exit the water if inside the exitTrigger
                     tpInput.FreeMovement();                      // update the free movement so we can rotate the character
-//                    tpInput.StaminaRecovery();
+                                                                 //                    tpInput.StaminaRecovery();
                 }
                 else
                 {
                     ExitSwimState();
                 }
                 tpInput.CameraInput();                          // update the camera input
-//                tpInput.UpdateHUD();                            // update hud graphics                
+                                                                //                tpInput.UpdateHUD();                            // update hud graphics                
             }
             else
             {
@@ -208,15 +208,15 @@ namespace Invector.vCharacterController.vActions
 
         private void StaminaConsumption()
         {
-//            if (tpInput.currentStamina <= 0)
-//            {
-//                tpInput.ChangeHealth(-healthConsumption);
-//            }
-//            else
-//            {
-//                tpInput.ReduceStamina(stamina, true);        // call the ReduceStamina method from the player
-//                tpInput.currentStaminaRecoveryDelay = 0.25f;    // delay to start recovery stamina           
-//            }
+            //            if (tpInput.currentStamina <= 0)
+            //            {
+            //                tpInput.ChangeHealth(-healthConsumption);
+            //            }
+            //            else
+            //            {
+            //                tpInput.ReduceStamina(stamina, true);        // call the ReduceStamina method from the player
+            //                tpInput.currentStaminaRecoveryDelay = 0.25f;    // delay to start recovery stamina           
+            //            }
         }
 
         public override void OnActionEnter(Collider other)
@@ -411,7 +411,7 @@ namespace Invector.vCharacterController.vActions
 
             if (actionInput.GetButtonDown())
             {
-                 tpInput.colliderRadius = originalColliderRadius;
+                tpInput.colliderRadius = originalColliderRadius;
                 tpInput.ControlCapsuleHeight();
 
                 exitLock = true;
