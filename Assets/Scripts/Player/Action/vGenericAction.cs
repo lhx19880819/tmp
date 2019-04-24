@@ -52,10 +52,17 @@ namespace Invector.vCharacterController.vActions
             TriggerActionInput();
         }
 
+        protected virtual void LateUpdate()
+        {
+            if (tpInput.enabled) return;
+            tpInput.LateUpdate();
+        }
+
         void OnAnimatorMove()
         {
             if (tpInput.enabled) return;
             tpInput.LayerControl();                              // update the verification of the layers 
+            tpInput.ActionsControl();                            // update the verifications of actions 
 
             AnimationBehaviour();
 
@@ -71,10 +78,6 @@ namespace Invector.vCharacterController.vActions
 
         protected virtual void TriggerActionInput()
         {
-            if (!tpInput.enabled)
-            {
-                return;
-            }
             if (triggerAction == null) return;
 
             if (canTriggerAction)
@@ -83,11 +86,13 @@ namespace Invector.vCharacterController.vActions
                 {
                     if (!triggerActionOnce)
                     {
+                        mbActionDone = false;
                         OnDoAction.Invoke(triggerAction);
                         TriggerAnimation();
+                        tpInput.enabled = false;
                         if (lockInput)
                         {
-                            StartCoroutine(UnlockInput());
+//                            StartCoroutine(UnlockInput());
                         }
                     }
                 }
@@ -169,15 +174,19 @@ namespace Invector.vCharacterController.vActions
                     if (!triggerAction.destroyAfter) OnEndAction.Invoke();
 
                     ResetPlayerSettings();
+                    mbActionDone = true;
+                    tpInput.enabled = true;
                 }
             }
         }
+
+        private bool mbActionDone = false;
 
         protected virtual bool playingAnimation
         {
             get
             {
-                if (triggerAction == null)
+                if (triggerAction == null || mbActionDone)
                 {
                     isPlayingAnimation = false;
                     return false;
@@ -271,6 +280,9 @@ namespace Invector.vCharacterController.vActions
             //            tpInput.ResetCameraState();
             canTriggerAction = false;
             triggerActionOnce = false;
+//            tpInput.enabled = true;
+//            tpInput.EnableGravityAndCollision(0f);
+//            isPlayingAnimation = false;
         }
     }
 }
