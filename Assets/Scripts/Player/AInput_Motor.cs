@@ -205,8 +205,9 @@ namespace Assets.Scripts.Player
                 transform.position = Animator.rootPosition;
                 return;
             }
-            if (!isGrounded && !jumpAirControl || lockMovement)
+            if (!isGrounded && !jumpAirControl || lockMovement || customAction)
             {
+                StopMove();
                 return;
             }
             if (!this.enabled) return;
@@ -382,9 +383,9 @@ namespace Assets.Scripts.Player
         protected virtual void FreeVelocity(float velocity)
         {
                         var _targetVelocity = transform.forward * velocity * speed;
-                        _targetVelocity.y = Rigidbody.velocity.y;
-                        Rigidbody.velocity = _targetVelocity;
-                        Rigidbody.AddForce(transform.forward * (velocity * speed) * Time.deltaTime, ForceMode.VelocityChange);
+            _targetVelocity.y = Rigidbody.velocity.y;
+            Rigidbody.velocity = _targetVelocity;
+            Rigidbody.AddForce(transform.forward * (velocity * speed) * Time.deltaTime, ForceMode.VelocityChange);
 
 //            var velY = transform.forward * velocity * speed;
 //            velY.y = _rigidbody.velocity.y;

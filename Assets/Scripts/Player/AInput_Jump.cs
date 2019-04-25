@@ -167,7 +167,7 @@ namespace Assets.Scripts.Player
         {
             CheckGroundDistance();
 
-            if (isDead || customAction)
+            if (isDead || customAction || landHigh)
             {
                 isGrounded = true;
                 return;

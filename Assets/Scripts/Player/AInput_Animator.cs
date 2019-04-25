@@ -42,6 +42,7 @@ namespace Assets.Scripts.Player
             // this way you can know exactly what animation state the character is playing
 
             landHigh = baseLayerInfo.IsName("LandHigh");
+//            Rigidbody.isKinematic = landHigh;
             quickStop = baseLayerInfo.IsName("QuickStop");
 
             isRolling = baseLayerInfo.IsName("Roll");
