@@ -1,4 +1,5 @@
-﻿using Invector.vCharacterController;
+﻿using System.Collections;
+using Invector.vCharacterController;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
@@ -127,7 +128,7 @@ namespace Assets.Scripts.Player
         private void UpdateJump()
         {
             //
-            if (CrossPlatformInputManager.GetButtonDown("Jump"))
+            if (!mbJumpLock && CrossPlatformInputManager.GetButtonDown("Jump"))
             {
                 Jump();
             }
@@ -275,12 +276,22 @@ namespace Assets.Scripts.Player
             {
                 Rigidbody.mass = Mass_Max;
                 Rigidbody.velocity = Vector3.zero;
+                StartCoroutine(JumpLock());
             }
             isGrounded = true;
+
             if (groundHit.transform != null)
             {
                 int maskTmp = (1 << groundHit.transform.gameObject.layer);
             }
+        }
+
+        private bool mbJumpLock = false;
+        private IEnumerator JumpLock()
+        {
+            mbJumpLock = true;
+            yield return new WaitForSecondsRealtime(.22f);
+            mbJumpLock = false;
         }
 
         void OnOffGround()
@@ -333,9 +344,9 @@ namespace Assets.Scripts.Player
             {
                 if (_hit.point.y >= (transform.position.y) && _hit.point.y <= (transform.position.y + stepOffsetEnd))
                 {
-                    var _speed = isStrafing ? Mathf.Clamp(input.magnitude, 0, 1) : speed;
-                    var velocityDirection = isStrafing ? (_hit.point - transform.position) : (_hit.point - transform.position).normalized;
-                    _rigidbody.velocity = velocityDirection * stepSmooth * (_speed * (velocity > 1 ? velocity : 1));
+//                    var _speed = isStrafing ? Mathf.Clamp(input.magnitude, 0, 1) : speed;
+//                    var velocityDirection = isStrafing ? (_hit.point - transform.position) : (_hit.point - transform.position).normalized;
+//                    _rigidbody.velocity = velocityDirection * stepSmooth * (_speed * (velocity > 1 ? velocity : 1));
                     return true;
                 }
             }
