@@ -38,6 +38,7 @@ namespace Assets.Scripts.Player
             isSprinting,
             isSliding,
             stopMove,
+            lockSpeed,
             autoCrouch;
 
         [HideInInspector]
@@ -102,10 +103,7 @@ namespace Assets.Scripts.Player
 
             if ((!isGrounded && !jumpAirControl) || lockMovement || isAttack || actions)
             {
-//                input = Vector2.zero;
-                Animator.SetFloat("InputMagnitude", 0);
-                direction = 0;
-                speed = 0;
+                StopMove();
                 return;
             }
             ControlCapsuleHeight();
@@ -130,6 +128,8 @@ namespace Assets.Scripts.Player
 
         private void ControlLocomotion()
         {
+            if (lockMovement || currentHealth <= 0) return;
+
             if (isStrafing)
             {
                 StrafeMovement();
@@ -151,7 +151,7 @@ namespace Assets.Scripts.Player
                 speed = Mathf.Clamp(speed, 0, 1f);
             // add 0.5f on sprint to change the animation on animator
             if (isSprinting) speed += 0.5f;
-            //if (stopMove || lockSpeed) speed = 0f;
+            if (stopMove || lockSpeed) speed = 0f;
 
             Animator.SetFloat("InputMagnitude", speed, dampTIme, Time.deltaTime);
 
@@ -340,33 +340,6 @@ namespace Assets.Scripts.Player
             }
             float fMoveYEx = .0f;
             float fMoveXEx = .0f;
-            //            if (m_bAutoMoveByOnPerson)
-            //            {
-            //                if (_rigidbody.velocity.magnitude < .1f)
-            //                {
-            //                    ++m_nMoveType;
-            //                    m_nMoveType = m_nMoveType % (int)(AutoMoveOnPerson.MoveMax);
-            //                }
-            //                switch (m_nMoveType)
-            //                {
-            //                    case (int)AutoMoveOnPerson.MoveFront:
-            //                        fMoveYEx = 1.0f;
-            //                        break;
-            //                    case (int)AutoMoveOnPerson.MoveBack:
-            //                        fMoveYEx = -1.0f;
-            //                        break;
-            //                    case (int)AutoMoveOnPerson.MoveLeft:
-            //                        fMoveXEx = 1.0f;
-            //                        break;
-            //                    case (int)AutoMoveOnPerson.MoveRight:
-            //                        fMoveXEx = -1.0f;
-            //                        break;
-            //                    default:
-            //                        break;
-            //
-            //                }
-            //                velocity = 1.0f;
-            //            }
             Vector3 v = Vector3.zero;
             if (direction > 1.0f || speed > 1.0f)
             {
@@ -408,10 +381,27 @@ namespace Assets.Scripts.Player
 
         protected virtual void FreeVelocity(float velocity)
         {
-            var _targetVelocity = transform.forward * velocity * speed;
-            _targetVelocity.y = Rigidbody.velocity.y;
-            Rigidbody.velocity = _targetVelocity;
-            Rigidbody.AddForce(transform.forward * (velocity * speed) * Time.deltaTime, ForceMode.VelocityChange);
+                        var _targetVelocity = transform.forward * velocity * speed;
+                        _targetVelocity.y = Rigidbody.velocity.y;
+                        Rigidbody.velocity = _targetVelocity;
+                        Rigidbody.AddForce(transform.forward * (velocity * speed) * Time.deltaTime, ForceMode.VelocityChange);
+
+//            var velY = transform.forward * velocity * speed;
+//            velY.y = _rigidbody.velocity.y;
+//            var velX = transform.right * velocity * direction;
+//            velX.x = _rigidbody.velocity.x;
+//
+//            if (isStrafing)
+//            {
+//                Vector3 v = (transform.TransformDirection(new Vector3(input.x, 0, input.y)) * (velocity > 0 ? velocity : 1f));
+//                v.y = _rigidbody.velocity.y;
+//                _rigidbody.velocity = Vector3.Lerp(_rigidbody.velocity, v, 20f * Time.deltaTime);
+//            }
+//            else
+//            {
+//                _rigidbody.velocity = velY;
+//                _rigidbody.AddForce(transform.forward * (velocity * speed) * Time.deltaTime, ForceMode.VelocityChange);
+//            }
         }
 
         public void EnableGravityAndCollision(float normalizedTime)
@@ -510,5 +500,39 @@ namespace Assets.Scripts.Player
                     ControlSpeed(freeSpeed.crouchSpeed);
             }
         }
+
+        [Tooltip("Select the layers the your character will stop moving when close to")]
+        public LayerMask stopMoveLayer;
+        [Tooltip("[RAYCAST] Stopmove Raycast Height")]
+        public float stopMoveHeight = 0.65f;
+        [Tooltip("[RAYCAST] Stopmove Raycast Distance")]
+        public float stopMoveDistance = 0.5f;
+
+        protected void StopMove()
+        {
+            if (input.sqrMagnitude < 0.1 || !isGrounded) return;
+
+            RaycastHit hitinfo;
+            Ray ray = new Ray(transform.position + new Vector3(0, stopMoveHeight, 0), targetDirection.normalized);
+
+            if (Physics.Raycast(ray, out hitinfo, _capsuleCollider.radius + stopMoveDistance, stopMoveLayer))
+            {
+                var hitAngle = Vector3.Angle(Vector3.up, hitinfo.normal);
+
+                if (hitinfo.distance <= stopMoveDistance && hitAngle > 85)
+                    stopMove = true;
+                else if (hitAngle >= slopeLimit + 1f && hitAngle <= 85)
+                    stopMove = true;
+            }
+            else if (Physics.Raycast(ray, out hitinfo, 1f, groundLayer))
+            {
+                var hitAngle = Vector3.Angle(Vector3.up, hitinfo.normal);
+                if (hitAngle >= slopeLimit + 1f && hitAngle <= 85)
+                    stopMove = true;
+            }
+            else
+                stopMove = false;
+        }
+
     }//class end
 }

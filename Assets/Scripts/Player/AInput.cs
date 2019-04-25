@@ -38,6 +38,7 @@ namespace Assets.Scripts.Player
 #else
             m_TurnSpeed = 0.2f;
 #endif
+            StartCoroutine(UpdateRaycast()); // limit raycasts calls for better performance
         }
 
         void OnEnable()
@@ -50,9 +51,7 @@ namespace Assets.Scripts.Player
         void OnDisable()
         {
             _isStrafing = false;
-            Animator.SetFloat("InputMagnitude", 0);
-            direction = 0;
-            speed = 0;
+            StopMove();
         }
 
         private void Update()
@@ -61,9 +60,8 @@ namespace Assets.Scripts.Player
             PCInput();
             if (Cursor.visible)
             {
-                Animator.SetFloat("InputMagnitude", 0);
-                direction = 0;
-                speed = 0;
+                StopMove();
+
                 return;
             }
 #endif
@@ -95,9 +93,7 @@ namespace Assets.Scripts.Player
             }
             if (Cursor.visible)
             {
-                Animator.SetFloat("InputMagnitude", 0);
-                direction = 0;
-                speed = 0;
+                StopMove();
                 return;
             }
 
@@ -120,9 +116,7 @@ namespace Assets.Scripts.Player
 #if UNITY_EDITOR
             if (Cursor.visible)
             {
-                Animator.SetFloat("InputMagnitude", 0);
-                direction = 0;
-                speed = 0;
+                StopMove();
                 return;
             }
 #endif
@@ -132,9 +126,8 @@ namespace Assets.Scripts.Player
 
         public void SetLockMove(bool b, float f = 0)
         {
-            Animator.SetFloat("InputMagnitude", 0);
-            direction = 0;
-            speed = 0;
+            StopMove();
+
             if (f == 0)
             {
                 lockMovement = b;
@@ -150,5 +143,17 @@ namespace Assets.Scripts.Player
             yield return new WaitForSecondsRealtime(f);
             lockMovement = b;
         }
+
+        protected IEnumerator UpdateRaycast()
+        {
+            while (true)
+            {
+                yield return new WaitForEndOfFrame();
+
+//                AutoCrouch();
+                StopMove();
+            }
+        }
+
     }//class end
 }

@@ -131,7 +131,6 @@ namespace Assets.Scripts.Player
             {
                 Jump();
             }
-            CheckGroundDistance();
             CheckGround();
             ControlJumpBehaviour();
         }
@@ -166,6 +165,8 @@ namespace Assets.Scripts.Player
 
         private void CheckGround()
         {
+            CheckGroundDistance();
+
             if (isDead || customAction)
             {
                 isGrounded = true;
@@ -196,7 +197,7 @@ namespace Assets.Scripts.Player
                 // clear the checkground to free the character to attack on air
                 var onStep = StepOffset();
 
-                if (groundDistance <= 0.01f && !isJumping)
+                if (groundDistance <= 0.05f)
                 {
                     //isGrounded = true;
                     OnGround();
@@ -205,7 +206,7 @@ namespace Assets.Scripts.Player
                 }
                 else
                 {
-                    if (groundDistance >= groundCheckDistance || isJumping)
+                    if (groundDistance >= groundCheckDistance)
                     {
                         OnOffGround();
                         // check vertical velocity
@@ -254,9 +255,9 @@ namespace Assets.Scripts.Player
                         }
                         else if (!onStep && !isJumping)
                         {
-                            if (Rigidbody.velocity.y > .0f)
-                                Rigidbody.AddForce(transform.up * jumpExtraGravity * Time.deltaTime, ForceMode.VelocityChange);
-                            else
+//                            if (Rigidbody.velocity.y > .0f)
+//                                Rigidbody.AddForce(transform.up * jumpExtraGravity * Time.deltaTime, ForceMode.VelocityChange);
+//                            else
                                 Rigidbody.AddForce(transform.up * extraGravity * Time.deltaTime, ForceMode.VelocityChange);
                         }
                     }
@@ -311,7 +312,7 @@ namespace Assets.Scripts.Player
                 isGrounded = false;
                 var slideVelocity = (GroundAngle() - slopeLimit) * 2f;
                 slideVelocity = Mathf.Clamp(slideVelocity, 0, 10);
-                Rigidbody.velocity = new Vector3(Rigidbody.velocity.x, -slideVelocity, Rigidbody.velocity.z);
+                _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, -slideVelocity, _rigidbody.velocity.z);
             }
             else
             {
@@ -322,7 +323,22 @@ namespace Assets.Scripts.Player
 
         bool StepOffset()
         {
-            // test 临时去掉阶梯
+            if (input.sqrMagnitude < 0.1 || !isGrounded) return false;
+
+            var _hit = new RaycastHit();
+            var _movementDirection = isStrafing && input.magnitude > 0 ? (transform.right * input.x + transform.forward * input.y).normalized : transform.forward;
+            Ray rayStep = new Ray((transform.position + new Vector3(0, stepOffsetEnd, 0) + _movementDirection * ((_capsuleCollider).radius + 0.05f)), Vector3.down);
+
+            if (Physics.Raycast(rayStep, out _hit, stepOffsetEnd - stepOffsetStart, groundLayer) && !_hit.collider.isTrigger)
+            {
+                if (_hit.point.y >= (transform.position.y) && _hit.point.y <= (transform.position.y + stepOffsetEnd))
+                {
+                    var _speed = isStrafing ? Mathf.Clamp(input.magnitude, 0, 1) : speed;
+                    var velocityDirection = isStrafing ? (_hit.point - transform.position) : (_hit.point - transform.position).normalized;
+                    _rigidbody.velocity = velocityDirection * stepSmooth * (_speed * (velocity > 1 ? velocity : 1));
+                    return true;
+                }
+            }
             return false;
         }
 

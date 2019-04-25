@@ -2566,6 +2566,7 @@ MonoBehaviour:
   isSprinting: 0
   isSliding: 0
   stopMove: 0
+  lockSpeed: 0
   autoCrouch: 0
   isRolling: 0
   isJumping: 0
@@ -2587,6 +2588,11 @@ MonoBehaviour:
   speed: 0
   direction: 0
   verticalVelocity: 0
+  stopMoveLayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  stopMoveHeight: 0.65
+  stopMoveDistance: 0.5
 --- !u!114 &114519995486178926
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -89,9 +89,11 @@ namespace Assets.Scripts.Player
 
             if (isStrafing)
             {
-                Animator.SetFloat("InputHorizontal", direction, dampTIme, Time.deltaTime);
+                animator.SetFloat("InputHorizontal", !stopMove && !lockMovement ? direction : 0f, 0.25f, Time.deltaTime);
+//                Animator.SetFloat("InputHorizontal", direction, dampTIme, Time.deltaTime);
             }
-            Animator.SetFloat("InputVertical", speed, dampTIme, Time.deltaTime);
+            animator.SetFloat("InputVertical", !stopMove && !lockMovement ? speed : 0f, 0.25f, Time.deltaTime);
+//            Animator.SetFloat("InputVertical", speed, dampTIme, Time.deltaTime);
         }
 
         public void MatchTarget(Vector3 matchPosition, Quaternion matchRotation, AvatarTarget target, MatchTargetWeightMask weightMask, float normalisedStartTime, float normalisedEndTime)
