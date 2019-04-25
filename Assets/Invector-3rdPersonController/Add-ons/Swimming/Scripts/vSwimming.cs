@@ -112,8 +112,9 @@ namespace Invector.vCharacterController.vActions
         public void OnAnimatorMove()
         {
             if (tpInput.enabled) return;
-            transform.rotation = tpInput.Animator.rootRotation;
-            transform.position = tpInput.Animator.rootPosition;
+            //            transform.rotation = tpInput.Animator.rootRotation;
+            //            transform.position = tpInput.Animator.rootPosition;
+            tpInput.OnAnimatorMoveSwim();
         }
 
         protected virtual void Update()
@@ -341,11 +342,11 @@ namespace Invector.vCharacterController.vActions
 
         private void SwimForwardInput()
         {
-            if (exitLock)
-            {
-                tpInput.ResetPlayerMotor();
-                return;
-            }
+//            if (exitLock)
+//            {
+//                tpInput.ResetPlayerMotor();
+//                return;
+//            }
             float h = CrossPlatformInputManager.GetAxis("Horizontal");
             float v = CrossPlatformInputManager.GetAxis("Vertical");
             // get input access from player

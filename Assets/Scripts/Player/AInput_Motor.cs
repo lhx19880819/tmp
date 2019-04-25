@@ -431,5 +431,84 @@ namespace Assets.Scripts.Player
             speed = 0;
             Rigidbody.velocity = Vector3.zero;
         }
+
+        public void OnAnimatorMoveSwim()
+        {
+            if (isGrounded)
+            {
+                transform.rotation = Animator.rootRotation;
+
+                //strafe extra speed
+                if (isStrafing)
+                {
+                    var _speed = Mathf.Abs(strafeMagnitude);
+                    float velocity = .0f;
+                    if (input.y > 0 && input.y > input.x)
+                        velocity = isCrouching ? mCrouchForward : mForwardSpeed;
+                    else
+                        velocity = isCrouching ? mCrouchBackward : mBackwardSpeed;
+                    float fWalkSpeed = input.y > 0 ? strafeSpeed.walkForwardSpeed : strafeSpeed.walkBackwardSpeed;
+                    if (isCrouching)
+                    {
+                        if (_speed <= 0.5f)
+                            ControlSpeed(strafeSpeed.crouchSpeed * velocity);
+                        else if (_speed <= 1.0f)
+                            ControlSpeed(velocity);
+                        else
+                            ControlSpeed(strafeSpeed.crouchSprintSpeed * velocity);
+                    }
+                    else
+                    {
+                        if (_speed <= 0.5f)
+                            //ControlSpeed(strafeSpeed.walkForwardSpeed * velocity);
+                            ControlSpeed(fWalkSpeed * velocity);
+                        else if (_speed <= 1f)
+                            ControlSpeed(velocity);
+                        else
+                            ControlSpeed(strafeSpeed.sprintSpeed * velocity);
+                    }
+
+                }
+                else if (!isStrafing)
+                {
+                    //free extra speed
+                    if (speed <= 0.5f)
+                        ControlSpeed(freeSpeed.walkForwardSpeed);
+                    else if (speed > 0.5 && speed <= 1f)
+                        ControlSpeed(freeSpeed.runningSpeed);
+                    else
+                        ControlSpeed(freeSpeed.sprintSpeed);
+
+                    if (isCrouching)
+                        ControlSpeed(freeSpeed.crouchSpeed);
+                }
+            }
+            else if (IsAirMoving())
+            {
+                if (IsGlide())
+                {
+                    float velocity = mGlideForward;
+                    ControlSpeed(velocity);
+                }
+                else
+                {
+                    float velocity = inputAir.y > 0 ? mBailOutForward : .0f;
+                    ControlSpeed(velocity);
+                }
+            }
+            else
+            {
+                //free extra speed
+                if (speed <= 0.5f)
+                    ControlSpeed(freeSpeed.walkForwardSpeed);
+                else if (speed > 0.5 && speed <= 1f)
+                    ControlSpeed(freeSpeed.runningSpeed);
+                else
+                    ControlSpeed(freeSpeed.sprintSpeed);
+
+                if (isCrouching)
+                    ControlSpeed(freeSpeed.crouchSpeed);
+            }
+        }
     }//class end
 }
